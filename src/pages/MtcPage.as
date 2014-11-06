@@ -12,6 +12,7 @@ package pages
 	import core.interfaces.PageClear;
 	import core.layout.Group;
 	import core.loadEvents.Cevent;
+	import core.loadEvents.DataEvent;
 	
 	import models.MtcItemMd;
 	import models.MtcMd;
@@ -43,11 +44,24 @@ package pages
 			addChild(backBtn);
 			backBtn.x = YAConst.SCREEN_WIDTH - 100;
 			
+			sonSprite = new Sprite();
+			addChild(sonSprite);
+			grandSonSprite = new Sprite();
+			addChild(grandSonSprite);
+			blackMask = new Shape();
+			blackMask.graphics.beginFill(0x000000,.8);
+			blackMask.graphics.drawRect(0,0,YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT);
+			blackMask.graphics.endFill();
+			grandSonSprite.addChild(blackMask);
+			grandSonSprite.visible = false;
 //			var timer:Timer = new Timer(100,1);
 //			timer.addEventListener(TimerEvent.TIMER,timerYcHandler);
 //			timer.start();å
 			init();
 		}
+		private var sonSprite:Sprite;
+		private var grandSonSprite:Sprite;
+		private var blackMask:Shape;
 		private function timerYcHandler(event:TimerEvent):void
 		{
 		}
@@ -113,13 +127,51 @@ package pages
 					mtcSonView.parent.removeChild(mtcSonView);
 				}
 			}
-			
+			// son view
 			mtcSonView = new MtcSonView(ccb.data);
+			mtcSonView.addEventListener(DataEvent.CLICK,showDetailHandler);
 			mtcSonView.addEventListener(Event.REMOVED_FROM_STAGE,sonViewNull);
-			addChild(mtcSonView);
+			sonSprite.addChild(mtcSonView);
 			mtcSonView.x = btnSprite.x + 353 + 30;
 		}
-		
+		/**
+		 *show grandson content 
+		 * @param event
+		 * 
+		 */		
+		private function showDetailHandler(event:DataEvent):void
+		{
+			grandSonSprite.visible = true;
+			detailImg = new CImage(604,781,false,false);
+			detailImg.y = 50;
+			detailImg.x = (YAConst.SCREEN_WIDTH - 604) / 2;
+			detailImg.url = event.data;
+			grandSonSprite.addChild(detailImg);
+			detailImg.addEventListener(Event.REMOVED_FROM_STAGE,setDetialNull);
+			var carr:Array = ["source/public/close.png","source/public/close.png"];
+			var closeDetailBtn:CButton = new CButton(carr,false,false);
+			closeDetailBtn.addEventListener(MouseEvent.CLICK,closeGrandView);
+			grandSonSprite.addChild(closeDetailBtn);
+			closeDetailBtn.x = detailImg.x + 604 - 50;
+			closeDetailBtn.y = 10;
+		}
+		private var detailImg:CImage;
+		private function closeGrandView(event:MouseEvent):void
+		{
+			grandSonSprite.visible = false;
+			if(!detailImg) return;
+			if(detailImg.parent)
+			{
+				detailImg.parent.removeChild(detailImg);
+			}
+		}
+		private function setDetialNull(event:Event):void
+		{
+			if(detailImg)
+			{
+				detailImg = null;
+			}
+		}
 		private function sonViewNull(event:Event):void
 		{
 			if(mtcSonView)
@@ -129,9 +181,10 @@ package pages
 		}
 		public function clearAll():void
 		{
+			closeGrandView(null);
 			if(mtcSonView && mtcSonView.parent)
 			{
-				this.removeChild(mtcSonView);
+				mtcSonView.parent.removeChild(mtcSonView);
 			}
 		}
 		public function hide():void

@@ -57,7 +57,7 @@ package pages
 			scroller = new HScroller(1690,890,sbar);
 			scroller.target = imgContain;
 			scroller.barX = 1690 + 20;
-			scroller.visible = false;
+			detailSprite.visible = false;
 			detailSprite.addChild(scroller);
 			
 			var carr:Array = ["source/public/wld_close.png","source/public/wld_close.png"];
@@ -161,14 +161,14 @@ package pages
 		}
 		private function completeHandler(event:Event):void
 		{
-			scroller.visible = detailSprite.visible = true;
+			detailSprite.visible = true;
 			imgContain.addChild(loader._loader);
 			loader._loader.addEventListener(Event.REMOVED_FROM_STAGE,detailNull);
 			scroller.reset();
 		}
 		private function closeDetail(event:MouseEvent):void
 		{
-			scroller.visible = detailSprite.visible = false;
+			detailSprite.visible = false;
 			while(imgContain.numChildren)
 			{
 				imgContain.removeChildAt(0);

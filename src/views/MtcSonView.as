@@ -8,6 +8,7 @@ package views
 	import core.baseComponent.CImage;
 	import core.layout.Group;
 	import core.loadEvents.Cevent;
+	import core.loadEvents.DataEvent;
 	
 	import models.MtcItemDetalMd;
 	import models.MtcItemMd;
@@ -49,20 +50,25 @@ package views
 		
 		private function slectHandler(event:Event):void
 		{
-			if(detailImg)
-			{
-				if(detailImg.parent)
-				{
-					detailImg.parent.removeChild(detailImg);
-				}
-			}
+//			if(detailImg)
+//			{
+//				if(detailImg.parent)
+//				{
+//					detailImg.parent.removeChild(detailImg);
+//				}
+//			}
 			var ccb:CButton = group.getCurrentObj() as CButton;
-			detailImg = new CImage(604,781,true,false);
-			detailImg.url = ccb.data;
-			detailImg.addEventListener(Event.REMOVED_FROM_STAGE,detailNull);
-			addChild(detailImg);
-			detailImg.x = 489 + 30;
+//			detailImg = new CImage(604,781,true,false);
+//			detailImg.url = ccb.data;
+//			detailImg.addEventListener(Event.REMOVED_FROM_STAGE,detailNull);
+//			addChild(detailImg);
+//			detailImg.x = 489 + 30;
+			
+			var cdata:DataEvent = new DataEvent(DataEvent.CLICK);
+			cdata.data = ccb.data;
+			this.dispatchEvent(cdata);
 		}
+		
 		private function detailNull(event:Event):void
 		{
 			if(detailImg)
