@@ -47,9 +47,9 @@ package pages
 			
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
 			contain = new Sprite();
-			var hscroller:HScroller = new HScroller(YAConst.SCREEN_WIDTH - YAConst.SCROLLBAR_RHGITH_MARGIN,YAConst.SCREEN_HEIGHT  - 200,sbar);
+			var hscroller:HScroller = new HScroller(YAConst.SCREEN_WIDTH - YAConst.SCROLLBAR_RHGITH_MARGIN,YAConst.SCREEN_HEIGHT  - 130,null);
 			hscroller.target = contain;
-			hscroller.y = 45;
+			hscroller.y = 30;
 			addChild(hscroller);
 			
 			detailContain = new Sprite();
@@ -66,25 +66,25 @@ package pages
 			var i:int = 0;
 			for each(var amd:ActiveItemMd in md.itemArr)
 			{
-				contentImg = new CImage(1334,563,false,false);
+				contentImg = new CImage(1274,463,false,false);
 				contentImg.url = amd.content;
 				contain.addChild(contentImg);
 				contentImg.addEventListener(MouseEvent.CLICK,clickHandler);
 				contentImg.x = beignX + 300;
-				contentImg.y =  i * 583;
+				contentImg.y =  i * 483;
 				contentImg.data = amd.son;
 				
-				labelImg = new CImage(273,52,true,false);
-				labelImg.url = amd.label;
-				labelImg.x = beignX;
-				labelImg.y = contentImg.y + 100;
-				contain.addChild(labelImg);
-				
-				iconImg = new CImage(42,42,true,false);
-				iconImg.url = "source/public/activeIcon.png";
-				iconImg.x = beignX - 40;
-				iconImg.y = contentImg.y + 100;
-				contain.addChild(iconImg);
+//				labelImg = new CImage(273,52,true,false);
+//				labelImg.url = amd.label;
+//				labelImg.x = beignX;
+//				labelImg.y = contentImg.y + 100;
+//				contain.addChild(labelImg);
+//				
+//				iconImg = new CImage(42,42,true,false);
+//				iconImg.url = "source/public/activeIcon.png";
+//				iconImg.x = beignX - 40;
+//				iconImg.y = contentImg.y + 100;
+//				contain.addChild(iconImg);
 				
 				i++;
 				

@@ -97,8 +97,8 @@ package pages
 			
 			addChild(nextBtn);
 			addChild(prevBtn);
-			nextBtn.y = prevBtn.y = (YAConst.SCREEN_HEIGHT - 118) / 2 - 118 /2;
-			nextBtn.x = YAConst.SCREEN_WIDTH - 116;
+			nextBtn.y = prevBtn.y = (YAConst.SCREEN_HEIGHT - 90 - 88) / 2;
+			nextBtn.x = YAConst.SCREEN_WIDTH - 90;
 			
 			
 		}

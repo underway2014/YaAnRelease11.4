@@ -1,5 +1,6 @@
 package pages
 {
+	import flash.display.IBitmapDrawable;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -35,7 +36,7 @@ package pages
 			
 			btnSprite = new Sprite();
 			btnSprite.x = 100;
-			btnSprite.y = 140;
+			btnSprite.y = 178;
 			addChild(btnSprite);
 			
 			var arr:Array = ["source/public/back_up.png","source/public/back_up.png"];
@@ -46,6 +47,7 @@ package pages
 			
 			sonSprite = new Sprite();
 			addChild(sonSprite);
+			sonSprite.y = btnSprite.y;
 			grandSonSprite = new Sprite();
 			addChild(grandSonSprite);
 			blackMask = new Shape();
@@ -78,7 +80,7 @@ package pages
 				btn.addEventListener(MouseEvent.CLICK,clickHandler);
 				group.add(btn);
 				btn.data = imd;
-				btn.y = i * 167;
+				btn.y = i * 156;
 				btnSprite.addChild(btn);
 				i++;
 			}
@@ -117,8 +119,21 @@ package pages
 			}
 		}
 		private var mtcSonView:MtcSonView;
+		private var arrowShape:Shape;
 		private function slectHandler(event:Event):void
 		{
+			if(!arrowShape)
+			{
+				arrowShape = new Shape();
+				arrowShape.graphics.beginFill(0xffffff);
+				arrowShape.graphics.moveTo(0,0);
+				arrowShape.graphics.lineTo(15,-10);
+				arrowShape.graphics.lineTo(15,10);
+				arrowShape.graphics.lineTo(0,0);
+				arrowShape.graphics.endFill();
+				sonSprite.addChild(arrowShape);
+			}
+			
 			var ccb:CButton = group.getCurrentObj() as CButton;
 			if(mtcSonView)
 			{
@@ -128,11 +143,26 @@ package pages
 				}
 			}
 			// son view
-			mtcSonView = new MtcSonView(ccb.data);
+			var mmd:MtcItemMd = ccb.data;
+			mtcSonView = new MtcSonView(mmd);
 			mtcSonView.addEventListener(DataEvent.CLICK,showDetailHandler);
 			mtcSonView.addEventListener(Event.REMOVED_FROM_STAGE,sonViewNull);
 			sonSprite.addChild(mtcSonView);
 			mtcSonView.x = btnSprite.x + 353 + 30;
+			
+			arrowShape.visible = true;
+			arrowShape.x = mtcSonView.x - 20;
+			
+			var len:int = mmd.itemArr.length;
+			var cuId:int = group.getCurrentId();
+			var leftC:int = cuId * 156 + 156 / 2;
+			arrowShape.y = leftC;
+			
+			var rHeight:int = len * 104;
+			
+			var yy:int = leftC - rHeight / 2;
+			
+			mtcSonView.y = yy;
 		}
 		/**
 		 *show grandson content 
@@ -142,9 +172,9 @@ package pages
 		private function showDetailHandler(event:DataEvent):void
 		{
 			grandSonSprite.visible = true;
-			detailImg = new CImage(604,781,false,false);
-			detailImg.y = 50;
-			detailImg.x = (YAConst.SCREEN_WIDTH - 604) / 2;
+			detailImg = new CImage(1575,830,false,false);
+			detailImg.y = (YAConst.SCREEN_HEIGHT - 90 - 830) / 2;
+			detailImg.x = (YAConst.SCREEN_WIDTH - 1575) / 2;
 			detailImg.url = event.data;
 			grandSonSprite.addChild(detailImg);
 			detailImg.addEventListener(Event.REMOVED_FROM_STAGE,setDetialNull);
@@ -152,7 +182,7 @@ package pages
 			var closeDetailBtn:CButton = new CButton(carr,false,false);
 			closeDetailBtn.addEventListener(MouseEvent.CLICK,closeGrandView);
 			grandSonSprite.addChild(closeDetailBtn);
-			closeDetailBtn.x = detailImg.x + 604 - 50;
+			closeDetailBtn.x = detailImg.x + 1575 - 82;
 			closeDetailBtn.y = 10;
 		}
 		private var detailImg:CImage;
@@ -186,6 +216,11 @@ package pages
 			{
 				mtcSonView.parent.removeChild(mtcSonView);
 			}
+			if(arrowShape)
+			{
+				arrowShape.visible = false;
+			}
+			group.selectById(-1);
 		}
 		public function hide():void
 		{

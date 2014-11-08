@@ -37,7 +37,7 @@ package pages
 			var i:int = 0;
 			for each(var url:String in md.contentArr)
 			{
-				img = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,true,false);
+				img = new CImage(YAConst.SCREEN_WIDTH,2160,false,false);
 				img.url = url;
 				imgContain.addChild(img);
 				img.y = i * YAConst.SCREEN_HEIGHT;

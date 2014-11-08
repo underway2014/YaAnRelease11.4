@@ -46,11 +46,11 @@ package views
 			for each(var amd:AtlaMd in md.itemArr)
 			{
 				
-				img = new CImage(505,836,false,false);
+				img = new CImage(1692,855,false,false);
 				img.url = amd.url;
 				img.y = 70;
-				img.x = 157 + (i % 3) * (505 + 30);
-				if(n % 3 == 0)
+				img.x = 110;
+				if(n % 1 == 0)
 				{
 					pageSprite = new Sprite();
 					imgArr.push(pageSprite);
@@ -71,7 +71,7 @@ package views
 			var backBtn:CButton = new CButton(barr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 100;
+			backBtn.x = YAConst.SCREEN_WIDTH - 90;
 			backBtn.y = 30;
 		}
 		private function backHandler(event:MouseEvent):void
@@ -89,8 +89,8 @@ package views
 			
 			addChild(nextBtn);
 			addChild(prevBtn);
-			nextBtn.y = prevBtn.y = (YAConst.SCREEN_HEIGHT - 118) / 2 - 118 /2;
-			nextBtn.x = YAConst.SCREEN_WIDTH - 116;
+			nextBtn.y = prevBtn.y = (YAConst.SCREEN_HEIGHT - 90 - 88) / 2;
+			nextBtn.x = YAConst.SCREEN_WIDTH - 90;
 			
 			
 		}

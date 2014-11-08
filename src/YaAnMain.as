@@ -1,5 +1,6 @@
 package
 {
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -15,7 +16,9 @@ package
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
 	import core.baseComponent.CSprite;
+	import core.bitmap.CBitmap;
 	import core.interfaces.PageClear;
+	import core.layout.Group;
 	import core.loadEvents.Cevent;
 	import core.loadEvents.DataEvent;
 	
@@ -111,6 +114,9 @@ package
 			home = new HomePage(homeArr);
 			home.addEventListener(DataEvent.CLICK,enterHandler);
 			addChild(home);
+			
+			
+			
 			btnContain = new Sprite();
 //			btnContain.y = 15;
 //			btnContain.graphics.beginFill(0x0,.2);
@@ -124,18 +130,27 @@ package
 			modeContain = new Sprite();
 			addChild(modeContain);
 			
-			btnContain.y = 968;
+			btnContain.y = 990;
 			addChild(btnContain);
 			topContain = new Sprite();
 			addChild(topContain);
 //			initGuideButton();
 			initNavigation();
+			
+			var maskshape:Shape = new Shape();
+			maskshape.graphics.beginFill(0xaa0000);
+			maskshape.graphics.drawRect(0,0,YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT);
+			maskshape.graphics.endFill();
+			this.addChild(maskshape);
+			this.mask = maskshape;
 		}
 		private var modeContain:Sprite;
 		private var btnContain:Sprite;
 		private var btnNameArr:Array = ["赏景点","看攻略","尝美食","玩乐地","有活动","买特产","查交通","电话簿"];
-		private var homeBtnArrd:Array = ["1.png","2.png","3.png","4.png","5.png","6.png","7.png","8.png"];
-		private var homeBtnArr:Array = ["1_d.png","2_d.png","3_d.png","4_d.png","5_d.png","6_d.png","7_d.png","8_d.png"];
+		private var homeBtnArr:Array = ["1.png","2.png","3.png","4.png","5.png","6.png","7.png","8.png"];
+		private var homeBtnArrd:Array = ["1_d.png","2_d.png","3_d.png","4_d.png","5_d.png","6_d.png","7_d.png","8_d.png"];
+		private var group:Group = new Group();
+		
 		private function initNavigation():void
 		{
 			var btn:CButton;
@@ -145,20 +160,27 @@ package
 			var lineImg:CImage;
 			for each(var str:String in homeBtnArr)
 			{
-				btn = new CButton([mainPath + str,mainPath + homeBtnArrd[i]],false,false);
+				btn = new CButton([mainPath + str,mainPath + homeBtnArrd[i]],false,true);
 				btn.addEventListener("buttonOK",relayOutHandler);
 				btnContain.addChild(btn);
 				btn.x = benginX + i * 240;
 //				btn.y = 968;
 				btn.data = i;
 				btn.addEventListener(MouseEvent.CLICK,clickHandler);
-				lineImg = new CImage(1,72,false,false);
-				lineImg.url = "source/public/" + "line.png";
-				btnContain.addChild(lineImg);
+				group.add(btn);
+//				lineImg = new CImage(1,72,false,false);
+//				lineImg.url = "source/public/" + "line.png";
+//				btnContain.addChild(lineImg);
 				i++;
-				lineImg.x = benginX + i * 240;
-				lineImg.y = 20;
+//				lineImg.x = benginX + i * 240;
+//				lineImg.y = 20;
 			}
+			group.addEventListener(Cevent.SELECT_CHANGE,changeHandler);
+		}
+		private function clickHandler(event:MouseEvent):void
+		{
+			var btn:CButton =  event.currentTarget as CButton;
+			group.selectByItem(btn);
 		}
 		private var nm:int;
 		private function relayOutHandler(event:Event):void
@@ -200,9 +222,9 @@ package
 		private var foodPage:FoodPage;
 		private var currentMode:PageClear;
 		private var willShowMode:PageClear;
-		private function clickHandler(event:MouseEvent):void
+		private function changeHandler(event:Event):void
 		{
-			var t:CButton = event.currentTarget as CButton;
+			var t:CButton = group.getCurrentObj() as CButton;
 			switch(t.data)
 			{
 				case YAConst.SJD:
@@ -325,6 +347,7 @@ package
 			for(var k:int = 0;k < modeContain.numChildren;k++)
 			{
 				citem = modeContain.getChildAt(k) as PageClear;
+				citem.clearAll();
 				if(citem == ss)
 				{
 					citem.show();

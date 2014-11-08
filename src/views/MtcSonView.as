@@ -22,9 +22,9 @@ package views
 			
 			md = _md;
 			
-			var nameImg:CImage = new CImage(489,66,true,false);
-			nameImg.url = md.name;
-			addChild(nameImg);
+//			var nameImg:CImage = new CImage(489,66,true,false);
+////			nameImg.url = md.name;
+//			addChild(nameImg);
 			
 			initList();
 		}
@@ -34,10 +34,10 @@ package views
 			var i:int = 0;
 			for each(var dmd:MtcItemDetalMd in md.itemArr)
 			{
-				btn = new CButton(dmd.skin,false,true);
+				btn = new CButton(dmd.skin,false,false);
 				btn.data = dmd.detail;
 				btn.addEventListener(MouseEvent.CLICK,clickHandler);
-				btn.y = i * 155 + 66;
+				btn.y = i * 104;
 				addChild(btn);
 				i++;
 				group.add(btn);

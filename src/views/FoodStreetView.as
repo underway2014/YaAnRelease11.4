@@ -2,6 +2,7 @@ package views
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CCScrollBar;
@@ -58,11 +59,14 @@ package views
 			var img:CImage;
 			for each(var amd:AtlaMd in md.itemArr)
 			{
-				img = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,false,false);
+				img = new CImage(1693,917,false,false);
 				img.url = amd.url;
 				imgArr.push(img);
 			}
 			loopAtl = new LoopAtlas(imgArr,false);
+			loopAtl.size = new Point(1693,917);
+			loopAtl.x = (YAConst.SCREEN_WIDTH - loopAtl.size.x) / 2;
+			loopAtl.y = 50;
 			addChild(loopAtl);
 			
 			initPageButton();
@@ -77,8 +81,8 @@ package views
 			
 			addChild(nextBtn);
 			addChild(prevBtn);
-			nextBtn.y = prevBtn.y = (YAConst.SCREEN_HEIGHT - 118) / 2 - 118 /2;
-			nextBtn.x = YAConst.SCREEN_WIDTH - 116;
+			nextBtn.y = prevBtn.y = (YAConst.SCREEN_HEIGHT - 90 - 88) / 2;
+			nextBtn.x = YAConst.SCREEN_WIDTH - 90;
 			
 			
 		}
