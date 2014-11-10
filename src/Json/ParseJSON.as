@@ -210,6 +210,7 @@ package Json
 			kmjMd.pointArr = new Array();
 			var kmjSpotMd:KmjPointMd;
 			var currType:int = 0;
+			var x:int = 0;
 			for each(var ko:Object in kmjData.points)
 			{
 				kmjSpotMd = new KmjPointMd();
@@ -219,8 +220,14 @@ package Json
 				kmjSpotMd.detailmd = new KmjPointDetailMd();
 				kmjSpotMd.detailmd.headArr = ko.detail.head;
 				kmjSpotMd.detailmd.name = ko.detail.name;
+				kmjSpotMd.detailmd.bg = ko.detail.background;
 				kmjSpotMd.detailmd.desc = ko.detail.desc;
 				
+				if(i > 0)
+				{
+					kmjMd.pointArr.push(kmjSpotMd);
+					continue;
+				}
 //				kmjMd.pointArr.push(kmjSpotMd);
 //				continue;
 				//景区美食推荐
@@ -274,11 +281,12 @@ package Json
 				
 				kmjMd.pointArr.push(kmjSpotMd);
 				
+				x++;
 				var i:int = 0;
 				i++;
 				if(i > 0)
 				{
-					break;
+//					break;
 				}
 			}
 			

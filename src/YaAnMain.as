@@ -16,7 +16,6 @@ package
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
 	import core.baseComponent.CSprite;
-	import core.bitmap.CBitmap;
 	import core.interfaces.PageClear;
 	import core.layout.Group;
 	import core.loadEvents.Cevent;

@@ -1,6 +1,7 @@
    package views
 {
 	import flash.display.Sprite;
+	import flash.display3D.textures.CubeTexture;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -10,6 +11,8 @@
 	import core.baseComponent.CImage;
 	import core.baseComponent.HScroller;
 	import core.baseComponent.LoopAtlas;
+	import core.baseComponent.MusicPlayer;
+	import core.loadEvents.CLoader;
 	
 	import models.KMJWalkLineMd;
 	import models.KmjPointDetailMd;
@@ -20,7 +23,7 @@
 	public class KmjDetailView extends Sprite
 	{
 		private var md:KmjPointDetailMd;
-		private var selfWidth:int = 1710 + 30;
+		private var selfWidth:int = 1710 + 35;
 		private var selfHeight:int = 900;
 		public function KmjDetailView(_md:KmjPointDetailMd)
 		{
@@ -28,24 +31,24 @@
 			
 			md = _md;
 			
-//			var bgImg:CImage = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,false,false);
-//			bgImg.url = md.bg;
-//			addChild(bgImg);
+			var bgImg:CImage = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,false,false);
+			bgImg.url = md.bg;
+			addChild(bgImg);
 			contain = new Sprite();
 			
 			var sbg:Sprite = new Sprite();
 			sbg.graphics.beginFill(0xffffff);
-			sbg.graphics.drawRect(-15,-15,selfWidth,selfHeight + 20);
+			sbg.graphics.drawRect(-17,-15,selfWidth,selfHeight + 20);
 			sbg.graphics.endFill();
 			
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
-			var scroller:HScroller = new HScroller(selfWidth,selfHeight,sbar);
+			scroller = new HScroller(selfWidth,selfHeight,sbar);
 			scroller.barX = selfWidth + 30;
 			scroller.target = contain;
 			
 			sbg.addChild(scroller);
 			
-			sbg.x = (YAConst.SCREEN_WIDTH - selfWidth) / 2;
+			sbg.x = (YAConst.SCREEN_WIDTH - selfWidth) / 2 + 10;
 			sbg.y = 50;
 			addChild(sbg);
 			
@@ -54,18 +57,73 @@
 			var backBtn:CButton = new CButton(arr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 100;
+			backBtn.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn.y = 20;
 			
 			initHead();
+			navContain = new Sprite();
+			navContain.x = 70;
+			addNavgation();
 			
 			detailContain = new Sprite();
 			contain.addChild(detailContain);
 			
-			detailContain.x = 150 -15;
+//			detailContain.x = 150 -15;
+			detailContain.y = currentY;
+			detailContain.x = -17;
 			
-			initDetai();
 			
+			initDetaiZS();
+//			initDetai();
+//			addMusic();
+			this.addChild(navContain);
 			
+		}
+		private var navContain:Sprite;
+		private var scroller:HScroller;
+		private var yarr:Array = [414 + 594,1387 + 594,2452 + 594,3862 + 594,4617 + 594,5222 + 594];
+		private function addNavgation():void
+		{
+			var narr:Array = ["spot_recomend.png","spot_play.png","spot_food.png","spot_techan.png","spot_zhusu.png","spot_info.png"];
+			
+			var nbtn:CButton;
+			var i:int = 0;
+			for each(var str:String in narr)
+			{
+				nbtn = new CButton(["source/public/" + str,"source/public/" + str],false);
+				nbtn.data = i;
+				nbtn.addEventListener(MouseEvent.CLICK,gotoIndex);
+				i++;
+				navContain.addChild(nbtn);
+				nbtn.y = i * 76;
+			}
+		}
+		private function gotoIndex(evt:MouseEvent):void
+		{
+			var cbtn:CButton = evt.currentTarget as CButton;
+			scroller.scrollTo(yarr[cbtn.data]);
+		}
+		private var music:MusicPlayer;
+		private function addMusic():void
+		{
+			music = new MusicPlayer("source/lookSpot/dongls/d.mp3",false,false);
+			var marr:Array = ["source/public/music_play.png","source/public/music_pause.png"];
+			var mbtn:CButton = new CButton(marr,false);
+			mbtn.addEventListener(MouseEvent.CLICK,playHandler);
+			mbtn.y = currentY + 20;
+			mbtn.x = 300;
+			detailContain.addChild(mbtn);
+			
+		}
+		private function playHandler(evet:MouseEvent):void
+		{
+			
+			if(music.isPause)
+			{
+				music.play();
+			}else{
+				music.pause();
+			}
 		}
 		private var detailContain:Sprite;
 		private var contain:Sprite;
@@ -222,5 +280,27 @@
 				loop = null;
 			}
 		}
+		
+		
+		private var loader:CLoader;
+		private function initDetaiZS():void
+		{
+			loader = new CLoader();
+			loader.load(md.name);
+			loader.addEventListener(CLoader.LOADE_COMPLETE,loadOkHandler);
+		}
+		private function loadOkHandler(event:Event):void
+		{
+			detailContain.addChild(loader._loader);
+			loader._loader.addEventListener(Event.REMOVED_FROM_STAGE,setDetailNull);
+		}
+		private function setDetailNull(evet:Event):void
+		{
+			if(loader._loader)
+			{
+				loader._loader = null;
+			}
+		}
+		
 	}
 }

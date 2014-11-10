@@ -14,6 +14,7 @@ package pages
 	import core.tween.TweenLite;
 	
 	import models.KmjMd;
+	import models.KmjPointDetailMd;
 	import models.KmjPointMd;
 	import models.YAConst;
 	
@@ -60,8 +61,8 @@ package pages
 			var backBtn:CButton = new CButton(arr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 100;
-			backBtn.y = 30;
+			backBtn.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn.y = 20;
 			
 			navagation = new Sprite();
 			addChild(navagation);
@@ -100,8 +101,17 @@ package pages
 		private var btnContain:Sprite;
 		private function initAlphaButton():void
 		{
+			
+			detailSprte = new Sprite();
+			detailSprte.graphics.beginFill(0x000000,.3);
+			detailSprte.graphics.drawRect(0,0,YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT);
+			detailSprte.graphics.endFill();
+			detailSprte.visible = false;
+			addChild(detailSprte);
+			
 			var btn:CButton;
 			btnArr = new Array();
+			var kk:int = 0;
 			for each(var kmd:KmjPointMd in kmjMd.pointArr)
 			{
 				btn = new CButton([kmd.skinArr[0],kmd.skinArr[0]],false,false);
@@ -110,13 +120,18 @@ package pages
 //				btn.graphics.drawRect(0,0,150,65);
 //				btn.graphics.endFill();
 				btnContain.addChild(btn);
-				btn.x = 200;
-				btn.y = 200;
+				btn.x = kmd.pointXY.x;
+				btn.y = kmd.pointXY.y;
 //				btn.x = Math.random() * 1700 + 100;
 //				btn.y = Math.random() * 900 + 50;
+				if(kk == 0)
+				{
+					cumd = kmd.detailmd;
+				}
 				btn.data = kmd.detailmd;
 				btnArr.push(btn);
 				btn.addEventListener(MouseEvent.CLICK,clickAlphaButton);
+				kk++;
 			}
 			autoFall();
 			timer = new Timer(100,1);
@@ -124,6 +139,7 @@ package pages
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 			timer.start();
 		}
+		private var detailSprte:Sprite;
 		private var timer:Timer;
 		private function dispatchHandler(event:Event):void
 		{
@@ -146,19 +162,25 @@ package pages
 				TweenLite.from(btn,1,{y:-100,onComplete:tweenOve});
 			}
 		}
-
+		private var cumd:KmjPointDetailMd;
 		private function initSpotButton():void
 		{
 			var btn:CButton;
+			var kk:int = 0;
 			for each(var kmd:KmjPointMd in kmjMd.pointArr)
 			{
 				btn = new CButton(kmd.skinArr,false);
 				btn.x = kmd.pointXY.x;
 				btn.y = kmd.pointXY.y;
+				if(kk == 0)
+				{
+					cumd = kmd.detailmd;
+				}
 				btn.data = kmd.detailmd;
 				btnContain.addChild(btn);
 				TweenLite.to(btn,1,{y:kmd.pointXY.y,delay:1,onComplete:tweenOve});
 				btn.addEventListener(MouseEvent.CLICK,clickHandler);
+				kk++;
 			}
 		}
 		private var tn:int = 0;
@@ -173,16 +195,17 @@ package pages
 		private function clickHandler(event:MouseEvent):void
 		{
 			var cb:CButton = event.currentTarget as CButton;
-			var atlasPage:AtlasPage = new AtlasPage(cb.data);
-			addChild(atlasPage);
+//			var atlasPage:AtlasPage = new AtlasPage(cumd);
+//			addChild(atlasPage);
 		}
 		private var detailView:KmjDetailView;
 		private function clickAlphaButton(event:MouseEvent):void
 		{
 			var cb:CButton = event.currentTarget as CButton;
-			detailView = new KmjDetailView(cb.data);
+			detailView = new KmjDetailView(cumd);
 			detailView.addEventListener(Event.REMOVED_FROM_STAGE,clearDetailView);
-			addChild(detailView);
+			detailSprte.addChild(detailView);
+			detailSprte.visible = true;
 		}
 		private function clearDetailView(event:Event):void
 		{
@@ -190,12 +213,14 @@ package pages
 			{
 				detailView = null;
 			}
+			detailSprte.visible = false;
 		}
 		public function clearAll():void
 		{
+			detailSprte.visible = false;
 			if(detailView && detailView.parent)
 			{
-				this.removeChild(detailView);
+				detailView.parent.removeChild(detailView);
 			}
 		}
 		public function hide():void

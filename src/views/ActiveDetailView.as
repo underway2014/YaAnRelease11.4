@@ -46,8 +46,8 @@ package views
 			hscroll.target = content;
 			
 			var topWiteShape:Shape = new Shape();
-			topWiteShape.graphics.beginFill(0xaa0000,.4);
-			topWiteShape.graphics.drawRect(0,0,SELF_WIDTH,15);
+			topWiteShape.graphics.beginFill(0xffffff,1);
+			topWiteShape.graphics.drawRect(0,0,SELF_WIDTH,28);
 			topWiteShape.graphics.endFill();
 			addChild(topWiteShape);
 			hcontain.addChild(topWiteShape);
@@ -55,8 +55,8 @@ package views
 			var closeImage:CImage = new CImage(66,58,true,false);
 			closeImage.url = "source/public/close.png";
 			addChild(closeImage);
-			closeImage.x = SELF_WIDTH - closeImage.width;
-			closeImage.y = 5;
+			closeImage.x = hcontain.x + SELF_WIDTH - closeImage.width - 10;
+			closeImage.y = hcontain.y + 10;
 			closeImage.addEventListener(MouseEvent.CLICK,closeHandler);
 			
 			var loader:CLoader = new CLoader();

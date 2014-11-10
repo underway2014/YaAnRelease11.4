@@ -48,8 +48,8 @@ package pages
 			var backBtn:CButton = new CButton(barr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 100;
-			backBtn.y = 30;
+			backBtn.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn.y = 20;
 			this.dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
 		
 		}

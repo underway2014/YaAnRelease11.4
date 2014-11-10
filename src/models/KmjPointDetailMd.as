@@ -12,5 +12,6 @@ package models
 		public var play:KMJDetailplayMd;
 		public var walkLine:Array;
 		public var info:InfoMd;
+		public var bg:String;
 	}
 }

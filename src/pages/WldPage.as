@@ -37,14 +37,15 @@ package pages
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
 			var hscroll:HScroller = new HScroller(YAConst.SCREEN_WIDTH - YAConst.SCROLLBAR_RHGITH_MARGIN,YAConst.SCREEN_HEIGHT - 150);
 			hscroll.target = contain;
+			hscroll.x = 200;
 			addChild(hscroll);
 			
 			var arr:Array = ["source/public/back_up.png","source/public/back_up.png"];
 			var backBtn:CButton = new CButton(arr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 100;
-//			backBtn.y = 20;
+			backBtn.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn.y = 20;
 			
 //			var timer:Timer = new Timer(100,1);
 //			timer.addEventListener(TimerEvent.TIMER,timerYcHandler);

@@ -1,6 +1,5 @@
 package pages
 {
-	import flash.display.IBitmapDrawable;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -43,7 +42,8 @@ package pages
 			var backBtn:CButton = new CButton(arr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 100;
+			backBtn.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn.y = 20;
 			
 			sonSprite = new Sprite();
 			addChild(sonSprite);
@@ -183,7 +183,7 @@ package pages
 			closeDetailBtn.addEventListener(MouseEvent.CLICK,closeGrandView);
 			grandSonSprite.addChild(closeDetailBtn);
 			closeDetailBtn.x = detailImg.x + 1575 - 82;
-			closeDetailBtn.y = 10;
+			closeDetailBtn.y = 10 + detailImg.y;
 		}
 		private var detailImg:CImage;
 		private function closeGrandView(event:MouseEvent):void
