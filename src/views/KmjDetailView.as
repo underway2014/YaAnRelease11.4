@@ -1,7 +1,6 @@
    package views
 {
 	import flash.display.Sprite;
-	import flash.display3D.textures.CubeTexture;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -74,8 +73,9 @@
 			
 			
 			initDetaiZS();
+			
 //			initDetai();
-//			addMusic();
+			addMusic();
 			this.addChild(navContain);
 			
 		}
@@ -106,24 +106,49 @@
 		private var music:MusicPlayer;
 		private function addMusic():void
 		{
-			music = new MusicPlayer("source/lookSpot/dongls/d.mp3",false,false);
+			music = new MusicPlayer("source/lookSpot/dongls/dls.mp3",false,false);
+			music.addEventListener(MusicPlayer.MUSIC_LOAD_COMPLETE,musicLoadOk);
 			var marr:Array = ["source/public/music_play.png","source/public/music_pause.png"];
 			var mbtn:CButton = new CButton(marr,false);
 			mbtn.addEventListener(MouseEvent.CLICK,playHandler);
-			mbtn.y = currentY + 20;
+			mbtn.y = 20;
 			mbtn.x = 300;
 			detailContain.addChild(mbtn);
 			
+			nowTimeTxt = new TextField();
+			nowTimeTxt.width = 50;
+			nowTimeTxt.text = 0 + "";
+			detailContain.addChild(nowTimeTxt);
+			nowTimeTxt.x = 700;
+			nowTimeTxt.y = 20;
+			
+			
+		}
+		private var nowTimeTxt:TextField;
+		private var totalTimeTxt:TextField;
+		private function musicLoadOk(event:Event):void
+		{
+			totalTimeTxt = new TextField();
+			totalTimeTxt.text = "/" + music.length / 1000;
+			detailContain.addChild(totalTimeTxt);
+			totalTimeTxt.x = 750;
+			totalTimeTxt.y = 20;
+			trace("music.length = ",music.length);
 		}
 		private function playHandler(evet:MouseEvent):void
 		{
-			
+			this.addEventListener(Event.ENTER_FRAME,changeSoundTime);
 			if(music.isPause)
 			{
 				music.play();
 			}else{
 				music.pause();
 			}
+		}
+		private function changeSoundTime(event:Event):void
+		{
+			nowTimeTxt.text = music.currentPosition / 1000 + "";
+			trace("music.currentPosition = ",music.currentPosition);
 		}
 		private var detailContain:Sprite;
 		private var contain:Sprite;
@@ -291,7 +316,7 @@
 		}
 		private function loadOkHandler(event:Event):void
 		{
-			detailContain.addChild(loader._loader);
+			detailContain.addChildAt(loader._loader,0);
 			loader._loader.addEventListener(Event.REMOVED_FROM_STAGE,setDetailNull);
 		}
 		private function setDetailNull(evet:Event):void
