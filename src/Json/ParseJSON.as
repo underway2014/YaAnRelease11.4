@@ -408,6 +408,7 @@ package Json
 			telMd = new TelMd();
 			var telData:Object = data.TEL;
 			telMd.name = telData.name;
+			telMd.bg = telData.background;
 			telMd.contentArr = telData.content;
 			telMd.dsc = telData.desc;
 			

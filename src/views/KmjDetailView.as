@@ -61,7 +61,7 @@
 			
 			initHead();
 			navContain = new Sprite();
-			navContain.x = 70;
+			navContain.x = 40;
 			addNavgation();
 			
 			detailContain = new Sprite();
@@ -109,7 +109,7 @@
 			music = new MusicPlayer("source/lookSpot/dongls/dls.mp3",false,false);
 			music.addEventListener(MusicPlayer.MUSIC_LOAD_COMPLETE,musicLoadOk);
 			var marr:Array = ["source/public/music_play.png","source/public/music_pause.png"];
-			var mbtn:CButton = new CButton(marr,false);
+			var mbtn:CButton = new CButton(marr,false,true,true);
 			mbtn.addEventListener(MouseEvent.CLICK,playHandler);
 			mbtn.y = 20;
 			mbtn.x = 300;
@@ -295,6 +295,10 @@
 			if(this.parent)
 			{
 				this.parent.removeChild(this);
+			}
+			if(this.hasEventListener(Event.ENTER_FRAME))
+			{
+				this.removeEventListener(Event.ENTER_FRAME,changeSoundTime);
 			}
 		}
 		private function clearLoop(event:Event):void
