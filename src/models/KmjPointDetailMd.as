@@ -13,5 +13,8 @@ package models
 		public var walkLine:Array;
 		public var info:InfoMd;
 		public var bg:String;
+		public var music:String;
+		public var video:String;
+		public var scrollArr:Array;
 	}
 }

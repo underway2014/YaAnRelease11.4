@@ -1,7 +1,6 @@
    package views
 {
 	import flash.display.Sprite;
-	import flash.display3D.textures.CubeTexture;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -31,6 +30,13 @@
 			
 			md = _md;
 			
+			yarr = [];
+			for each(var x:int in md.scrollArr)
+			{
+				yarr.push(x + 594);
+			}
+			
+			
 			var bgImg:CImage = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,false,false);
 			bgImg.url = md.bg;
 			addChild(bgImg);
@@ -43,7 +49,7 @@
 			
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
 			scroller = new HScroller(selfWidth,selfHeight,sbar);
-			scroller.barX = selfWidth + 30;
+			scroller.barX = selfWidth + 20;
 			scroller.target = contain;
 			
 			sbg.addChild(scroller);
@@ -62,7 +68,7 @@
 			
 			initHead();
 			navContain = new Sprite();
-			navContain.x = 70;
+			navContain.x = 40;
 			addNavgation();
 			
 			detailContain = new Sprite();
@@ -74,14 +80,15 @@
 			
 			
 			initDetaiZS();
+			
 //			initDetai();
-//			addMusic();
+			addMusic();
 			this.addChild(navContain);
 			
 		}
 		private var navContain:Sprite;
 		private var scroller:HScroller;
-		private var yarr:Array = [414 + 594,1387 + 594,2452 + 594,3862 + 594,4617 + 594,5222 + 594];
+		private var yarr:Array;
 		private function addNavgation():void
 		{
 			var narr:Array = ["spot_recomend.png","spot_play.png","spot_food.png","spot_techan.png","spot_zhusu.png","spot_info.png"];
@@ -103,28 +110,34 @@
 			var cbtn:CButton = evt.currentTarget as CButton;
 			scroller.scrollTo(yarr[cbtn.data]);
 		}
-		private var music:MusicPlayer;
+		private var musicView:MusicView;
 		private function addMusic():void
 		{
-			music = new MusicPlayer("source/lookSpot/dongls/d.mp3",false,false);
-			var marr:Array = ["source/public/music_play.png","source/public/music_pause.png"];
-			var mbtn:CButton = new CButton(marr,false);
-			mbtn.addEventListener(MouseEvent.CLICK,playHandler);
-			mbtn.y = currentY + 20;
-			mbtn.x = 300;
-			detailContain.addChild(mbtn);
+			musicView = new MusicView(md.music);
+			detailContain.addChild(musicView);
+			musicView.x = 450 + 30;
+			musicView.y = 47;
+			
+//			music = new MusicPlayer("source/lookSpot/dongls/1.mp3",false,false);
+//			music.addEventListener(MusicPlayer.MUSIC_LOAD_COMPLETE,musicLoadOk);
+//			var marr:Array = ["source/public/music_play.png","source/public/music_pause.png"];
+//			var mbtn:CButton = new CButton(marr,false,true,true);
+//			mbtn.addEventListener(MouseEvent.CLICK,playHandler);
+//			mbtn.y = 20;
+//			mbtn.x = 300;
+//			detailContain.addChild(mbtn);
+//			
+//			nowTimeTxt = new TextField();
+//			nowTimeTxt.width = 50;
+//			nowTimeTxt.text = 0 + "";
+//			detailContain.addChild(nowTimeTxt);
+//			nowTimeTxt.x = 700;
+//			nowTimeTxt.y = 20;
+			
 			
 		}
-		private function playHandler(evet:MouseEvent):void
-		{
-			
-			if(music.isPause)
-			{
-				music.play();
-			}else{
-				music.pause();
-			}
-		}
+		private var nowTimeTxt:TextField;
+		private var totalTimeTxt:TextField;
 		private var detailContain:Sprite;
 		private var contain:Sprite;
 		private function initHead():void
@@ -271,6 +284,10 @@
 			{
 				this.parent.removeChild(this);
 			}
+			if(musicView)
+			{
+				musicView.clear();
+			}
 		}
 		private function clearLoop(event:Event):void
 		{
@@ -291,7 +308,7 @@
 		}
 		private function loadOkHandler(event:Event):void
 		{
-			detailContain.addChild(loader._loader);
+			detailContain.addChildAt(loader._loader,0);
 			loader._loader.addEventListener(Event.REMOVED_FROM_STAGE,setDetailNull);
 		}
 		private function setDetailNull(evet:Event):void

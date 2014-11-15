@@ -151,6 +151,7 @@ package pages
 			{
 				this.visible = false;
 			}
+			dispatchEvent(new Event("backHome",true));
 		}
 		public function clearAll():void
 		{

@@ -105,6 +105,7 @@ package Json
 							btnMd = new ButtonMd();
 							btnMd.skinArr = bobj.skin;
 							btnMd.id = bobj.id;
+							btnMd.data = bobj.data;
 							picmd.btnArr.push(btnMd);
 							btnMd.coordXY = new Point();
 							if(bobj.coord.length > 1)
@@ -222,12 +223,12 @@ package Json
 				kmjSpotMd.detailmd.name = ko.detail.name;
 				kmjSpotMd.detailmd.bg = ko.detail.background;
 				kmjSpotMd.detailmd.desc = ko.detail.desc;
+				kmjSpotMd.detailmd.music = ko.detail.music;
+				kmjSpotMd.detailmd.video = ko.detail.video;
+				kmjSpotMd.detailmd.scrollArr = ko.detail.scroll;
 				
-				if(i > 0)
-				{
-					kmjMd.pointArr.push(kmjSpotMd);
-					continue;
-				}
+				kmjMd.pointArr.push(kmjSpotMd);
+				continue;
 //				kmjMd.pointArr.push(kmjSpotMd);
 //				continue;
 				//景区美食推荐
@@ -408,6 +409,7 @@ package Json
 			telMd = new TelMd();
 			var telData:Object = data.TEL;
 			telMd.name = telData.name;
+			telMd.bg = telData.background;
 			telMd.contentArr = telData.content;
 			telMd.dsc = telData.desc;
 			

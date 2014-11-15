@@ -5,7 +5,6 @@ package views
 	
 	import core.baseComponent.CImage;
 	
-	import models.KMJDetailplayMd;
 	import models.PublicMd;
 
 	/**

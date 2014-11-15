@@ -117,6 +117,7 @@ package pages
 			{
 				this.visible = false;
 			}
+			dispatchEvent(new Event("backHome",true));
 		}
 		private var mtcSonView:MtcSonView;
 		private var arrowShape:Shape;

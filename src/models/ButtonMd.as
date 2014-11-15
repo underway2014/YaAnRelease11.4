@@ -15,5 +15,6 @@ package models
 		public var skinArr:Array;
 		public var id:int;
 		public var coordXY:Point;
+		public var data:String;
 	}
 }

@@ -1,21 +1,24 @@
 package pages
 {
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
 	import core.baseComponent.LoopAtlas;
 	import core.date.CDate;
 	import core.interfaces.PageClear;
-	import core.loadEvents.DataEvent;
 	
 	import models.AtlaMd;
 	import models.ButtonMd;
 	import models.HomeMD;
 	import models.WeatherMd;
 	import models.YAConst;
+	
+	import views.VideoView;
 	
 	public class HomePage extends Sprite implements PageClear
 	{
@@ -43,8 +46,8 @@ package pages
 					img.url = pmd.url;
 					for each(var bmd:ButtonMd in pmd.btnArr)
 					{
-						btn = new CButton(bmd.skinArr,false,false);
-						btn.data = [md.type,bmd.id];
+						btn = new CButton(bmd.skinArr,true,false);
+						btn.data = bmd.data;
 						btn.addEventListener(MouseEvent.CLICK,enterHandler);
 						img.addChild(btn);
 						btn.x = bmd.coordXY.x;
@@ -64,26 +67,53 @@ package pages
 			addChild(loopAtlas);
 			
 			initPageButton();
+			
+			videoContain = new Sprite();
+			videoContain.visible = false;
+			addChild(videoContain);
+			videoContain.graphics.beginFill(0x000000,.7);
+			videoContain.graphics.drawRect(0,0,YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT);
+			videoContain.graphics.endFill();
+			
 		}
+		private var videoContain:Sprite;
 		private var tianqiImg:CImage;
 		public function addWeatherInfo(md:WeatherMd):void
 		{
 			
 			if(tianqiImg)
 			{
-				var tqimg:CImage = new CImage(120,120,true,false);
+				var tqimg:CImage = new CImage(120,110,true,false);
 				tqimg.url = md.icon;
 				tianqiImg.addChild(tqimg);
-				tqimg.x = 300;
-				tqimg.y = 300;
+				tqimg.x = 200;
+				tqimg.y = 200;
 				
+				var wformat:TextFormat = new TextFormat(null,30,0x5b554d,null);
+				var temTxt:TextField = new TextField();
+				temTxt.text = md.tem1 + "~" + md.tem2 + "℃";
+				temTxt.width = 200;
+				tianqiImg.addChild(temTxt);
+				temTxt.setTextFormat(wformat);
+				temTxt.x = tqimg.x + 120 + 20;
+				temTxt.y = tqimg.y;
+				
+				
+				var wformat2:TextFormat = new TextFormat(null,25,0x5b554d,null);
 				var dayField:TextField = new TextField();
 				dayField.text = CDate.getData();
+				dayField.width = 160;
 				tianqiImg.addChild(dayField);
-				dayField.x = 200;
+				dayField.setTextFormat(wformat2);
+				dayField.x = tqimg.x + 120 + 20;
+				dayField.y = tqimg.y + 40;
 				
+				var wformat3:TextFormat = new TextFormat(null,20,0x5b554d,null);
 				var weekField:TextField = new TextField();
+				weekField.x = tqimg.x + 120 + 20;
 				weekField.text = CDate.getWeek();
+				weekField.y = tqimg.y + 70;
+				weekField.setTextFormat(wformat3);
 				tianqiImg.addChild(weekField);
 			}
 		}
@@ -112,13 +142,31 @@ package pages
 				loopAtlas.prev();
 			}
 		}
+		private var videoView:VideoView;
 		//首页图片点击
 		private function enterHandler(event:MouseEvent):void
 		{
 			var cb:CButton = event.currentTarget as CButton;
-			var cdata:DataEvent = new DataEvent(DataEvent.CLICK);
-			cdata.data = cb.data;
-			this.dispatchEvent(cdata);
+//			var cdata:DataEvent = new DataEvent(DataEvent.CLICK);
+//			cdata.data = cb.data;
+//			this.dispatchEvent(cdata);
+			videoContain.visible = true;
+			videoView = new VideoView();
+			videoView.addEventListener(Event.REMOVED_FROM_STAGE,clearVideo);
+			videoView.addEventListener(VideoView.VIDEO_PLAY_OVER,playOverHandler);
+			videoView.url = cb.data;
+			videoContain.addChild(videoView); 
+			videoView.x = 448;
+			videoView.y = 50;
+		}
+		private function playOverHandler(event:Event):void
+		{
+			clearVideo(null);
+		}
+		private function clearVideo(event:Event):void
+		{
+			videoView.clear();
+			videoContain.visible = false;
 		}
 		private var imgArr:Array;
 		private function next():void
@@ -128,7 +176,11 @@ package pages
 		}
 		public function clearAll():void
 		{
-			
+			if(videoView)
+			{
+				videoContain.visible = false;
+				videoView.clear();
+			}
 		}
 		public function hide():void
 		{

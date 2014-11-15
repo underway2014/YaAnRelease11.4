@@ -8,6 +8,7 @@ package
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.ui.Mouse;
 	import flash.utils.Timer;
 	
 	import Json.ParseJSON;
@@ -44,6 +45,10 @@ package
 	{
 		public function YaAnMain()
 		{
+//			Mouse.hide();
+//			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
+//			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
+//			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
 			initData();
 			
 			this.addEventListener(Cevent.PAGEINIT_COMPLETE,pageInitComplete);
@@ -59,6 +64,10 @@ package
 			weatherTimer.addEventListener(TimerEvent.TIMER_COMPLETE,getWeather);
 			weatherTimer.start();
 		}
+		private function doNothing(event:MouseEvent):void
+		{
+			
+		}
 		private function getWeather(event:TimerEvent):void
 		{
 //			http://www.weather.com.cn/data/cityinfo/101271701.html
@@ -66,7 +75,7 @@ package
 //			http://flash.weather.com.cn/wmaps/xml/sichuan.xml
 
 			weatherData = new WeatherXmlLoader();
-//			weatherData.loader("http://flash.weather.com.cn/wmaps/xml/sichuan.xml");
+			weatherData.loader("http://flash.weather.com.cn/wmaps/xml/sichuan.xml");
 			weatherData.addEventListener(WeatherXmlLoader.LOADER_COMPLETE,weathHandler);
 		}
 		private var weatherName:Array = ["晴","space","space","阵雨","小雨","中雨","大雨","小雪","中雪","大雪","沙","霾","雾","尘","多云","阴"];
@@ -142,6 +151,8 @@ package
 			maskshape.graphics.endFill();
 			this.addChild(maskshape);
 			this.mask = maskshape;
+			
+			this.addEventListener("backHome",backHomeHandler);
 		}
 		private var modeContain:Sprite;
 		private var btnContain:Sprite;
@@ -312,6 +323,10 @@ package
 					break;
 			}
 		}
+		private function backHomeHandler(event:Event):void
+		{
+			group.selectById(-1);
+		}
 		private function pageOkHandler(event:Event):void
 		{
 			var xx:Sprite = new Sprite();
@@ -325,23 +340,7 @@ package
 		private var isExist:Boolean = false;
 		private function clear(ss:PageClear):void
 		{
-//			if(willShowMode)
-//			{
-//				currentMode = willShowMode;
-//			}
-//			if(currentMode)
-//			{
-//				if(currentMode != ss)
-//				{
-//					ss.show();
-//					currentMode.hide();
-//					currentMode.clearAll();
-//					currentMode = ss;
-//				}
-//			}else{
-//				ss.show();
-//				currentMode = ss;
-//			}
+			home.clearAll();
 			var citem:PageClear;
 			for(var k:int = 0;k < modeContain.numChildren;k++)
 			{

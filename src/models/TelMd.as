@@ -9,5 +9,6 @@ package models
 		public var dsc:String;
 		public var url:String;
 		public var contentArr:Array;
+		public var bg:String;
 	}
 }

@@ -190,6 +190,7 @@ package pages
 			{
 				this.visible = false;
 			}
+			dispatchEvent(new Event("backHome",true));
 		}
 		private function loopAtlbackHandler(event:MouseEvent):void
 		{

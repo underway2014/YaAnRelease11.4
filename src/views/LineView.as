@@ -31,14 +31,21 @@ package views
 			addChild(scroller);
 			scroller.y = 30;
 			scroller.x = (YAConst.SCREEN_WIDTH - 1740) / 2;
-			scroller.barX = 1740 + 50;
+			scroller.barX = 1740 + 27;
 			
-			var carr:Array = ["source/public/close.png","source/public/close.png"];
-			var closeDetailBtn:CButton = new CButton(carr,false,false);
-			closeDetailBtn.addEventListener(MouseEvent.CLICK,closeDetail);
-			closeDetailBtn.x = scroller.x + 1740 - 82;
-			closeDetailBtn.y = 40;
-			addChild(closeDetailBtn);
+//			var carr:Array = ["source/public/close.png","source/public/close.png"];
+//			var closeDetailBtn:CButton = new CButton(carr,false,false);
+//			closeDetailBtn.addEventListener(MouseEvent.CLICK,closeDetail);
+//			closeDetailBtn.x = scroller.x + 1740 - 82;
+//			closeDetailBtn.y = 40;
+//			addChild(closeDetailBtn);
+			
+			var arr:Array = ["source/public/back_up.png","source/public/back_up.png"];
+			var backBtn:CButton = new CButton(arr,false);
+			backBtn.addEventListener(MouseEvent.CLICK,closeDetail);
+			addChild(backBtn);
+			backBtn.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn.y = 20;
 			
 			loader = new CLoader();
 			loader.load(md.detail);

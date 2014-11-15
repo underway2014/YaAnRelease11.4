@@ -9,6 +9,7 @@ package pages
 	import core.baseComponent.CButton;
 	import core.baseComponent.CDrag;
 	import core.baseComponent.CImage;
+	import core.baseComponent.HScroller;
 	import core.interfaces.PageClear;
 	import core.loadEvents.Cevent;
 	import core.tween.TweenLite;
@@ -23,7 +24,7 @@ package pages
 	public class KmjPage extends Sprite implements PageClear
 	{
 		private var kmjMd:KmjMd;
-		private var drag:CDrag;
+		private var drag:HScroller;
 		private var navagation:Sprite;
 		public function KmjPage(_md:KmjMd)
 		{
@@ -35,8 +36,10 @@ package pages
 			bgImg.url = kmjMd.bg;
 			addChild(bgImg);
 			
-			drag = new CDrag(1727,YAConst.SCREEN_HEIGHT - 50);
+			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
+			drag = new HScroller(1727,YAConst.SCREEN_HEIGHT - 50,sbar);
 			addChild(drag);
+			drag.barX = drag.width + 32;
 			var contain:Sprite = new Sprite();
 			drag.target = contain;
 			drag.x = 97;
@@ -97,6 +100,7 @@ package pages
 			{
 				this.visible = false;
 			}
+			dispatchEvent(new Event("backHome",true));
 		}
 		private var btnContain:Sprite;
 		private function initAlphaButton():void
@@ -114,14 +118,14 @@ package pages
 			var kk:int = 0;
 			for each(var kmd:KmjPointMd in kmjMd.pointArr)
 			{
-				btn = new CButton([kmd.skinArr[0],kmd.skinArr[0]],false,false);
+				btn = new CButton([kmd.skinArr[0],kmd.skinArr[0]],true,false);
 //				btn = new CButton(kmd.skinArr,false,false);
-//				btn.graphics.beginFill(0xaa0000,0.2);
+//				btn.graphics.beginFill(0xaa0000,0.2);t
 //				btn.graphics.drawRect(0,0,150,65);
 //				btn.graphics.endFill();
 				btnContain.addChild(btn);
-				btn.x = kmd.pointXY.x;
-				btn.y = kmd.pointXY.y;
+				btn.x = kmd.pointXY.x - 97;
+				btn.y = kmd.pointXY.y - 34;
 //				btn.x = Math.random() * 1700 + 100;
 //				btn.y = Math.random() * 900 + 50;
 				if(kk == 0)
@@ -202,7 +206,7 @@ package pages
 		private function clickAlphaButton(event:MouseEvent):void
 		{
 			var cb:CButton = event.currentTarget as CButton;
-			detailView = new KmjDetailView(cumd);
+			detailView = new KmjDetailView(cb.data);
 			detailView.addEventListener(Event.REMOVED_FROM_STAGE,clearDetailView);
 			detailSprte.addChild(detailView);
 			detailSprte.visible = true;

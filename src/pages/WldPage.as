@@ -36,9 +36,11 @@ package pages
 			
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
 			var hscroll:HScroller = new HScroller(YAConst.SCREEN_WIDTH - YAConst.SCROLLBAR_RHGITH_MARGIN,YAConst.SCREEN_HEIGHT - 150);
-			hscroll.target = contain;
+//			hscroll.target = contain;
 			hscroll.x = 200;
-			addChild(hscroll);
+//			addChild(hscroll);
+			addChild(contain);
+			contain.x = 200;
 			
 			var arr:Array = ["source/public/back_up.png","source/public/back_up.png"];
 			var backBtn:CButton = new CButton(arr,false);
@@ -55,21 +57,38 @@ package pages
 			addChild(detailSprite);
 			imgContain = new Sprite();
 			detailSprite.addChild(imgContain);
-			scroller = new HScroller(1690,890,sbar);
+			scroller = new HScroller(1690,905,sbar);
 			scroller.target = imgContain;
-			scroller.barX = 1690 + 20;
+			scroller.barX = 1574 + 67;
+			var detailBg:CImage = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,false,false);
+			detailBg.url = "source/play/detail/bg.jpg";
+			detailSprite.addChild(detailBg);
+			var dbg:Shape = new Shape();
+			dbg.graphics.beginFill(0xffffff,1);
+			dbg.graphics.drawRoundRect(0,-15,1574,905 + 30,20,20);
+			dbg.graphics.endFill();
+			detailSprite.addChild(dbg);
 			detailSprite.visible = false;
 			detailSprite.addChild(scroller);
+			dbg.x = scroller.x = 177;
+			dbg.y = scroller.y = 30;
+//			
+//			var carr:Array = ["source/public/close.png","source/public/close.png"];
+//			var closeBtn:CButton = new CButton(carr,false,false);
+//			closeBtn.addEventListener(MouseEvent.CLICK,closeDetail);
+//			detailSprite.addChild(closeBtn);
+//			closeBtn.x = 1574 + 177 - 72 + 35;
+//			closeBtn.y = 0;
 			
-			var carr:Array = ["source/public/wld_close.png","source/public/wld_close.png"];
-			var closeBtn:CButton = new CButton(carr,false,false);
-			closeBtn.addEventListener(MouseEvent.CLICK,closeDetail);
-			detailSprite.addChild(closeBtn);
-			closeBtn.x = 1600;
-			closeBtn.y = 20;
+			var arr1:Array = ["source/public/back_up.png","source/public/back_up.png"];
+			var backBtn1:CButton = new CButton(arr,false);
+			backBtn1.addEventListener(MouseEvent.CLICK,closeDetail);
+			addChild(backBtn1);
+			backBtn1.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn1.y = 20;
 			
-			detailSprite.x = 115;
-			detailSprite.y = 50;
+//			detailSprite.x = 115;
+//			detailSprite.y = 50;
 			
 			initContent();
 		}
@@ -83,6 +102,7 @@ package pages
 			{
 				this.visible = false;
 			}
+			dispatchEvent(new Event("backHome",true));
 		}
 		private var beginY:int = 70;
 		private var radius:int = 10;
@@ -125,9 +145,7 @@ package pages
 				cirShape.y = beginY + 72 + n * 135;
 			}
 			
-			contain.graphics.beginFill(0xaacc00,.3);
-			contain.graphics.drawRect(0,0,contain.width,contain.height);
-			contain.graphics.endFill();
+			
 			
 			timer = new Timer(100,1);
 			timer.addEventListener(TimerEvent.TIMER,dispatchHandler);
@@ -222,6 +240,10 @@ package pages
 			while(imgContain.numChildren)
 			{
 				imgContain.removeChildAt(0);
+			}
+			if(detailSprite)
+			{
+				detailSprite.visible = false;
 			}
 		}
 		public function hide():void

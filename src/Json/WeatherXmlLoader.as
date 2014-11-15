@@ -40,7 +40,6 @@ package Json
 			this.xmlUrl = xmlUrl;
 			
 			_loader = new URLLoader(new URLRequest(xmlUrl));
-			//			_loader.dataFormat = URLLoaderDataFormat.TEXT;
 			_loader.addEventListener(ProgressEvent.PROGRESS,progressHandler);
 			_loader.addEventListener(Event.COMPLETE,completeHandler);
 			_loader.addEventListener(IOErrorEvent.IO_ERROR,errorHandler);
