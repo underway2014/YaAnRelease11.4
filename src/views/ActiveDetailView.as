@@ -5,6 +5,7 @@ package views
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
 	import core.baseComponent.HScroller;
 	import core.loadEvents.CLoader;
@@ -21,43 +22,34 @@ package views
 		{
 			super();
 			md = _md;
-//			this.graphics.beginFill(0xffffff);
-//			this.graphics.drawRect(
 			
 			var bg:CImage = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,false,false);
 			bg.url = md.bg;
 			addChild(bg);
 			
-			var hcontain:Sprite = new Sprite();
-//			hcontain.graphics.beginFill(0xffffff);
-//			hcontain.graphics.drawRect(0,-10,SELF_WIDTH,SELF_HEIGHT);
-//			hcontain.graphics.endFill();
+			var hcontain:Shape = new Shape();
+			hcontain.graphics.beginFill(0xf6f6f6);
+			hcontain.graphics.drawRoundRect(0,0,SELF_WIDTH,SELF_HEIGHT + 30,20,20);
+			hcontain.graphics.endFill();
 			this.addChild(hcontain);
-			hcontain.y = 30;
+			hcontain.y = 15;
 			hcontain.x = (YAConst.SCREEN_WIDTH - SELF_WIDTH) / 2;
+			
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
 			var hscroll:HScroller = new HScroller(SELF_WIDTH,SELF_HEIGHT,sbar);
+			detailcontent = new Sprite();
+			hscroll.target = detailcontent;
 			hscroll.barX = SELF_WIDTH + 30;
-//			hscroll.y = 10;
-			hcontain.addChild(hscroll);
-//			hscroll.x = (YAConst.SCREEN_WIDTH - SELF_WIDTH) / 2;
-//			hscroll.y = 50;
-			content = new Sprite();
-			hscroll.target = content;
+			hscroll.y = 30;
+			hscroll.x = (YAConst.SCREEN_WIDTH - SELF_WIDTH) / 2;
+			addChild(hscroll);
 			
-			var topWiteShape:Shape = new Shape();
-			topWiteShape.graphics.beginFill(0xffffff,1);
-			topWiteShape.graphics.drawRect(0,0,SELF_WIDTH,28);
-			topWiteShape.graphics.endFill();
-			addChild(topWiteShape);
-			hcontain.addChild(topWiteShape);
-			
-			var closeImage:CImage = new CImage(66,58,true,false);
-			closeImage.url = "source/public/close.png";
-			addChild(closeImage);
-			closeImage.x = hcontain.x + SELF_WIDTH - closeImage.width - 10;
-			closeImage.y = hcontain.y + 10;
-			closeImage.addEventListener(MouseEvent.CLICK,closeHandler);
+			var arr:Array = ["source/public/back_up.png","source/public/back_up.png"];
+			var backBtn:CButton = new CButton(arr,false);
+			backBtn.addEventListener(MouseEvent.CLICK,closeHandler);
+			addChild(backBtn);
+			backBtn.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn.y = 20;
 			
 			var loader:CLoader = new CLoader();
 			loader.load(md.content);
@@ -70,11 +62,11 @@ package views
 				this.parent.removeChild(this);
 			}
 		}
-		private var content:Sprite;
+		private var detailcontent:Sprite;
 		private function okHandler(event:Event):void
 		{
 			var l:CLoader = event.currentTarget as CLoader;
-			content.addChild(l._loader);
+			detailcontent.addChild(l._loader);
 		}
 	}
 }

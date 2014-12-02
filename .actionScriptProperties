@@ -28,8 +28,8 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="D:/libin/YACbase/bin/CBase.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="D:/flashPro/SWC/BMap.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="G:/FLASH Project/SWC/BMap.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="G:/FLASH Project/YaAnRelease/YACbase/bin/CBase.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

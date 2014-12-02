@@ -157,7 +157,7 @@ package pages
 			videoView.url = cb.data;
 			videoContain.addChild(videoView); 
 			videoView.x = 448;
-			videoView.y = 50;
+			videoView.y = 100;
 		}
 		private function playOverHandler(event:Event):void
 		{

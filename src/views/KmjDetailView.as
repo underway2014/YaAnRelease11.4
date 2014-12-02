@@ -10,7 +10,6 @@
 	import core.baseComponent.CImage;
 	import core.baseComponent.HScroller;
 	import core.baseComponent.LoopAtlas;
-	import core.baseComponent.MusicPlayer;
 	import core.loadEvents.CLoader;
 	
 	import models.KMJWalkLineMd;
@@ -115,8 +114,8 @@
 		{
 			musicView = new MusicView(md.music);
 			detailContain.addChild(musicView);
-			musicView.x = 450 + 30;
-			musicView.y = 47;
+			musicView.x = 450 + 60;
+			musicView.y = 45;
 			
 //			music = new MusicPlayer("source/lookSpot/dongls/1.mp3",false,false);
 //			music.addEventListener(MusicPlayer.MUSIC_LOAD_COMPLETE,musicLoadOk);

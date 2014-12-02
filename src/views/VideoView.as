@@ -46,6 +46,15 @@ package views
 		public function VideoView(w:int = 1024,h:int = 768,showBar:Boolean = false,controlArr:Array = null)
 		{
 			super();
+			
+			var bgShape:Shape = new Shape();
+			bgShape.graphics.lineStyle(2,0xffffff,.6);
+			bgShape.graphics.beginFill(0xffffff,.1);
+			bgShape.graphics.drawRect(0,0,w + 90,h + 70);
+			bgShape.graphics.endFill();
+			addChild(bgShape);
+			bgShape.x = -45;
+			bgShape.y = -35;
 			video = new Video(w,h);
 			addChild(video);
 			//			this.addEventListener(MouseEvent.CLICK,soundCloseHandler);
@@ -92,7 +101,7 @@ package views
 			
 			controlSprite = new Sprite();
 			addChild(controlSprite);
-			controlSprite.y = _height - 50;
+			controlSprite.y = _height - 65;
 			controlSprite.addChild(stopBtn);
 			controlSprite.x = 20;
 			
@@ -101,34 +110,38 @@ package views
 			rsprite.y = 10;
 			controlSprite.addChild(rsprite);
 			var rbg:Shape = new Shape();
-			rbg.graphics.beginFill(0xffffff,.5);
-			rbg.graphics.drawRoundRect(-10,-10,712 + 210,40,15,15);
+			rbg.graphics.beginFill(0xffffff,.3);
+			rbg.graphics.drawRoundRect(-10,-10,712 + 210,38,38,38);
 			rbg.graphics.endFill();
 			rsprite.addChild(rbg);
 			
 			
 			var proShape:Shape = new Shape();
 			proShape.graphics.beginFill(0x000000);
-			proShape.graphics.drawRoundRect(0,0,712,19,15,15);
+			proShape.graphics.drawRoundRect(0,0,712,19,20,20);
 			proShape.graphics.endFill();
 			rsprite.addChild(proShape);
 			
 			var proImg:CImage = new CImage(712,19,false,false);
 			proImg.url = "source/public/video_progress.png";
 			rsprite.addChild(proImg);
-			
+//			proImg.x = -1;
 //			proImg.x = proShape.x = 63;
 //			proImg.y = proShape.y = 10;
 			
 			maskShape = new Shape();
-			maskShape.graphics.beginFill(0x00ff00);
 			rsprite.addChild(maskShape);
 			proImg.mask = maskShape;
+			
+			proView = new ProgressView();
+			rsprite.addChild(proView);
+			proView.x = -30;
+			proView.y = -40;
 			
 			
 			var txtFormat:TextFormat = new TextFormat(null,23,0xffffff,true);
 			var txt:TextField = new TextField();
-			txt.text = "雅安宣传片欣赏";1
+			txt.text = "雅安宣传片欣赏";
 			txt.width = 170;
 			txt.setTextFormat(txtFormat);
 			txt.selectable = false;
@@ -143,15 +156,16 @@ package views
 			var closeBtn:CButton = new CButton(closeArr,false,false,false);
 			closeBtn.addEventListener(MouseEvent.CLICK,closeVideoHandler);
 			addChild(closeBtn);
-			closeBtn.x = _width - 70;
-			closeBtn.y = 0;
+			closeBtn.x = _width - 27;
+			closeBtn.y = -25;
 			
-			var bottomBg:CImage = new CImage(1430,124,false,false);
-			bottomBg.url = "source/public/video_bottom.png";
-			addChildAt(bottomBg,0);
-			bottomBg.y = _height - 10;
-			bottomBg.x = (_width - 1430) / 2;
+//			var bottomBg:CImage = new CImage(1430,124,false,false);
+//			bottomBg.url = "source/public/video_bottom.png";
+//			addChildAt(bottomBg,0);
+//			bottomBg.y = _height - 10;
+//			bottomBg.x = (_width - 1430) / 2;
 		}
+		private var proView:ProgressView;
 		private var maskShape:Shape;
 		private var controlSprite:Sprite;
 		private var stopBtn:CButton;
@@ -213,12 +227,15 @@ package views
 		//更新进度块的位置
 		private function updateSlider(event:Event):void
 		{
-			maskShape.graphics.endFill();
+			
+			maskShape.graphics.clear();
 			var longS:int = 712*(stream.time/duration);
 			maskShape.graphics.beginFill(0x00ff00);
 			maskShape.graphics.drawRect(0,0,longS,19);
 			maskShape.graphics.endFill();
 			
+			proView.text = Math.floor(stream.time/duration * 100) + "%";
+			proView.x = longS - 30;
 		}
 		
 		private var dragRect:Rectangle;

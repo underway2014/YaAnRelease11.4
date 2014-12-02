@@ -1,4 +1,4 @@
-package core.loadEvents
+package Json
 {
 	import core.xmlclass.XmlParse;
 	
@@ -53,7 +53,6 @@ package core.loadEvents
 		private function completeHandler(event:Event):void
 		{
 
-			trace(_loader.data);
 			_data = new XML(_loader.data);
 			dataArr.push(_data);
 

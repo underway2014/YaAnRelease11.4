@@ -56,7 +56,7 @@ package pages
 			detailSprite = new Sprite();
 			addChild(detailSprite);
 			imgContain = new Sprite();
-			detailSprite.addChild(imgContain);
+//			detailSprite.addChild(imgContain);
 			scroller = new HScroller(1690,905,sbar);
 			scroller.target = imgContain;
 			scroller.barX = 1574 + 67;
@@ -110,7 +110,8 @@ package pages
 		{
 			var btn:CButton;
 			var i:int = 0;
-			
+			var lineShape:Shape = new Shape();
+			lineShape.graphics.lineStyle(2,0xffffff);
 			for each(var wmd:WldItemMd in md.itemArr)
 			{
 				btn = new CButton(wmd.skinsArr,false,false);
@@ -125,24 +126,25 @@ package pages
 				}
 				btn.y = i * 135 + beginY;
 				i++;
+				if(i < md.itemArr.length)
+				{
+					lineShape.graphics.moveTo(892,(i - 1) * 135 + beginY + 72 + 10);
+					lineShape.graphics.lineTo(892,i * 135 + 72 + beginY - 10);
+				}
 			}
-			
-			var lineShape:Shape = new Shape();
-			lineShape.graphics.lineStyle(2,0xffffff);
-			lineShape.graphics.moveTo(892,beginY + 72);
-			lineShape.graphics.lineTo(892,(i - 1) * 135 + 72 + beginY);
 			contain.addChild(lineShape);
 			
-			var cirShape:Shape;
+			var cirShape:CImage;
 			for(var n:int = 0;n < i;n++)
 			{
-				cirShape = new Shape();
-				cirShape.graphics.beginFill(0xffffff);
-				cirShape.graphics.drawCircle(0,0,radius);
-				cirShape.graphics.endFill();
+				cirShape = new CImage(19,19,false,false);
+				cirShape.url = "source/public/playCircle.png";
+//				cirShape.graphics.beginFill(0xffffff);
+//				cirShape.graphics.drawCircle(0,0,radius);
+//				cirShape.graphics.endFill();
 				contain.addChild(cirShape);
-				cirShape.x = 892;
-				cirShape.y = beginY + 72 + n * 135;
+				cirShape.x = 882;
+				cirShape.y = beginY + 72 + n * 135 - 10;
 			}
 			
 			

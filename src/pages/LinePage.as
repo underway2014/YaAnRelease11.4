@@ -87,7 +87,7 @@ package pages
 			
 			var pageImg:CImage;
 			var i:int = 0;
-			var beginX:int = 125
+			var beginX:int = 172
 			for each(var pmd:LinePageMd in lineData.pageArr)
 			{
 				psprite = new Sprite();

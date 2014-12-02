@@ -24,9 +24,15 @@ package views
 		public function CMapView(_LngLatPoint:Point,sizePoint:Point,_zoomRank = 12)
 		{
 			super();
-			
-			var map:Map = new Map(new Size(sizePoint.x,sizePoint.y));
-			addChild(map);
+			try
+			{
+				var map:Map = new Map(new Size(sizePoint.x,sizePoint.y));
+				addChild(map);
+				
+			}catch(er:Error)
+			{
+				return;
+			}
 			map.centerAndZoom(new LngLat(_LngLatPoint.x,_LngLatPoint.y),_zoomRank);
 			
 			var layer:Layer = new RasterLayer("Baidumap",map);

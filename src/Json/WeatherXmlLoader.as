@@ -38,11 +38,16 @@ package Json
 		public function loader(xmlUrl:String):void
 		{
 			this.xmlUrl = xmlUrl;
-			
-			_loader = new URLLoader(new URLRequest(xmlUrl));
-			_loader.addEventListener(ProgressEvent.PROGRESS,progressHandler);
-			_loader.addEventListener(Event.COMPLETE,completeHandler);
-			_loader.addEventListener(IOErrorEvent.IO_ERROR,errorHandler);
+			try
+			{
+				_loader = new URLLoader(new URLRequest(xmlUrl));
+				_loader.addEventListener(ProgressEvent.PROGRESS,progressHandler);
+				_loader.addEventListener(Event.COMPLETE,completeHandler);
+				_loader.addEventListener(IOErrorEvent.IO_ERROR,errorHandler);
+				
+			}catch(er:Error){
+				
+			}
 			
 		}
 		private function realLoad():void
@@ -186,7 +191,7 @@ package Json
 		}
 		private function errorHandler(event:IOErrorEvent):void
 		{
-			throw new Error("加载："+xmlUrl+"出错！");
+//			throw new Error("加载："+xmlUrl+"出错！");
 		}
 		/**
 		 * 返回 children 个数 

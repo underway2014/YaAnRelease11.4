@@ -7,7 +7,6 @@ package pages
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
-	import core.baseComponent.HScroller;
 	import core.baseComponent.LoopAtlas;
 	import core.interfaces.PageClear;
 	import core.loadEvents.CLoader;
@@ -109,7 +108,7 @@ package pages
 		}
 		public function clearAll():void
 		{
-			
+			loop.gotoPage(0);
 		}
 		public function hide():void
 		{

@@ -1,5 +1,6 @@
 package pages
 {
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -7,7 +8,6 @@ package pages
 	import flash.utils.Timer;
 	
 	import core.baseComponent.CButton;
-	import core.baseComponent.CDrag;
 	import core.baseComponent.CImage;
 	import core.baseComponent.HScroller;
 	import core.interfaces.PageClear;
@@ -36,8 +36,15 @@ package pages
 			bgImg.url = kmjMd.bg;
 			addChild(bgImg);
 			
+			var whiteBorder:Shape = new Shape();
+			whiteBorder.graphics.beginFill(0xffffff);
+			whiteBorder.graphics.drawRect(0,0,1727,YAConst.SCREEN_HEIGHT - 170 + 30);
+			whiteBorder.graphics.endFill();
+			addChild(whiteBorder);
+			
+			
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
-			drag = new HScroller(1727,YAConst.SCREEN_HEIGHT - 50,sbar);
+			drag = new HScroller(1727,YAConst.SCREEN_HEIGHT - 170,sbar);
 			addChild(drag);
 			drag.barX = drag.width + 32;
 			var contain:Sprite = new Sprite();
@@ -45,12 +52,21 @@ package pages
 			drag.x = 97;
 			drag.y = 50;
 			
+			whiteBorder.y = drag.y - 20;
+			whiteBorder.x = drag.x;
+			
 			var mapImg:CImage = new CImage(1727,2693,false,false);
 			mapImg.url = kmjMd.map;
 			contain.addChild(mapImg);
 			
 			btnContain = new Sprite();
 			contain.addChild(btnContain);
+			
+			var explainImg:CImage = new CImage(239,137,false,false);
+			explainImg.url = "source/lookSpot/explain.png";
+			addChild(explainImg);
+			explainImg.x = 117;
+			explainImg.y = 73;
 			
 //			var timer:Timer = new Timer(100,1);
 //			timer.addEventListener(TimerEvent.TIMER,timerHandler);
@@ -226,6 +242,7 @@ package pages
 			{
 				detailView.parent.removeChild(detailView);
 			}
+			drag.reset();
 		}
 		public function hide():void
 		{

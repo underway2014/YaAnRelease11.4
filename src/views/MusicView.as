@@ -6,6 +6,7 @@ package views
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
@@ -19,20 +20,32 @@ package views
 		{
 			super();
 			
-			var bgImg:CImage = new CImage(411,53,false,false);
+			var bgImg:CImage = new CImage(985,50,false,false);
 			bgImg.url = "source/public/music_bg.png";
 			addChild(bgImg);
 			
-			var nfromat:TextFormat = new TextFormat(null,18,0x000000,null);
-			var txt:TextField = new TextField();
-			txt.text = "音频——景点描述";
-			txt.width = 300;
-			addChild(txt);
-			txt.setTextFormat(nfromat);
-			txt.x = 25;
-			txt.y = 10;
+//			var nfromat:TextFormat = new TextFormat(null,18,0x000000,null);
+//			var txt:TextField = new TextField();
+//			txt.text = "音频——景点描述";
+//			txt.width = 300;
+//			addChild(txt);
+//			txt.setTextFormat(nfromat);
+//			txt.x = 25;
+//			txt.y = 10;
 			
-			var proImg:CImage = new CImage(362,5,false,false);
+			
+			timeFormat = new TextFormat(null,16,0xffffff,null,null,null,null,null,TextFormatAlign.CENTER);
+			currentTimeTxt = new TextField();
+			currentTimeTxt.width = 65;
+			currentTimeTxt.text = "00:00";
+			currentTimeTxt.setTextFormat(timeFormat);
+			currentTimeTxt.y = 13;
+			addChild(currentTimeTxt);
+			
+			var probgImg:CImage = new CImage(856,8,false,false);
+			probgImg.url = "source/public//music_progressbg.png";
+			addChild(probgImg);
+			var proImg:CImage = new CImage(856,8,false,false);
 			proImg.url = "source/public/music_progress.png";
 			addChild(proImg);
 			
@@ -44,19 +57,25 @@ package views
 			mbtn = new CButton(marr,false,true,true);
 			mbtn.addEventListener(MouseEvent.CLICK,playHandler);
 			mbtn.y = 0;
-			mbtn.x = -53;
+			mbtn.x = -50;
 			addChild(mbtn);
 			
 			progressShape = new Shape();
 			addChild(progressShape);
-			progressShape.x = proImg.x = 25;
-			progressShape.y = proImg.y = 35;
+			probgImg.x = progressShape.x = proImg.x = 65;
+			probgImg.y = progressShape.y = proImg.y = 21;
 			proImg.mask = progressShape;
 		}
+		private var timeFormat:TextFormat;
 		private var mbtn:CButton;
+		private var currentTimeTxt:TextField;
 		private function playOverHandler(event:Event):void
 		{
 			progressShape.graphics.clear();
+			progressShape.graphics.endFill();
+			currentTimeTxt.text = "00:00";
+			currentTimeTxt.setTextFormat(timeFormat);
+			this.clear();
 			mbtn.select(false);
 		}
 		private var progressShape:Shape;
@@ -64,13 +83,14 @@ package views
 		
 		private function musicLoadOk(event:Event):void
 		{
-			var timeformat:TextFormat = new TextFormat(null,18,0xa69c91);
+//			var timeformat:TextFormat = new TextFormat(null,18,0xa69c91);
 			
 			var totalTimeTxt:TextField = new TextField();
+			totalTimeTxt.width = 65;
 			totalTimeTxt.text = CDate.timeFormate(music.length / 1000);
-			totalTimeTxt.x = 411 - 70;
-			totalTimeTxt.y = 10;
-			totalTimeTxt.setTextFormat(timeformat);
+			totalTimeTxt.x = 920;
+			totalTimeTxt.y = 13;
+			totalTimeTxt.setTextFormat(timeFormat);
 			addChild(totalTimeTxt);
 			totalTime = music.length;
 		}
@@ -91,8 +111,11 @@ package views
 		{
 			progressShape.graphics.clear();
 			progressShape.graphics.beginFill(0xaacc00);
-			progressShape.graphics.drawRect(0,0,music.currentPosition / totalTime * 362,10);
+			progressShape.graphics.drawRect(0,0,music.currentPosition / totalTime * 856,10);
 			progressShape.graphics.endFill();
+			
+			currentTimeTxt.text = CDate.timeFormate(music.currentPosition / 1000);
+			currentTimeTxt.setTextFormat(timeFormat);
 		}
 		public function clear():void
 		{
