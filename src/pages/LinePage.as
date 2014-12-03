@@ -65,7 +65,7 @@ package pages
 			addChild(nextBtn);
 			addChild(prevBtn);
 			nextBtn.y = prevBtn.y = (YAConst.SCREEN_HEIGHT - 90 - 88) / 2;
-			nextBtn.x = YAConst.SCREEN_WIDTH - 90;
+			nextBtn.x = YAConst.SCREEN_WIDTH - 84;
 			
 			
 		}

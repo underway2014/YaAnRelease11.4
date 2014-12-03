@@ -84,7 +84,7 @@ package pages
 			var backBtn1:CButton = new CButton(arr,false);
 			backBtn1.addEventListener(MouseEvent.CLICK,closeDetail);
 			addChild(backBtn1);
-			backBtn1.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn1.x = YAConst.SCREEN_WIDTH - 84;
 			backBtn1.y = 20;
 			
 //			detailSprite.x = 115;

@@ -71,7 +71,7 @@ package views
 			var backBtn:CButton = new CButton(barr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn.x = YAConst.SCREEN_WIDTH - 84;
 			backBtn.y = 30;
 		}
 		private function backHandler(event:MouseEvent):void
