@@ -43,18 +43,18 @@
 			
 			var sbg:Sprite = new Sprite();
 			sbg.graphics.beginFill(0xffffff);
-			sbg.graphics.drawRect(-17,-15,selfWidth,selfHeight + 20);
+			sbg.graphics.drawRect(-17,-15,selfWidth,selfHeight + 50);
 			sbg.graphics.endFill();
 			
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
-			scroller = new HScroller(selfWidth,selfHeight,sbar);
+			scroller = new HScroller(selfWidth,selfHeight + 30,sbar);
 			scroller.barX = selfWidth + 20;
 			scroller.target = contain;
 			
 			sbg.addChild(scroller);
 			
 			sbg.x = (YAConst.SCREEN_WIDTH - selfWidth) / 2 + 10;
-			sbg.y = 50;
+			sbg.y = 35;
 			addChild(sbg);
 			
 			
@@ -112,6 +112,10 @@
 		private var musicView:MusicView;
 		private function addMusic():void
 		{
+			if(!md.music || md.music == "")
+			{
+				return;
+			}
 			musicView = new MusicView(md.music);
 			detailContain.addChild(musicView);
 			musicView.x = 450 + 60;
@@ -279,14 +283,15 @@
 		private var loop:LoopAtlas;
 		private function backHandler(event:MouseEvent):void
 		{
-			if(this.parent)
-			{
-				this.parent.removeChild(this);
-			}
 			if(musicView)
 			{
 				musicView.clear();
 			}
+			if(this.parent)
+			{
+				this.parent.removeChild(this);
+			}
+			
 		}
 		private function clearLoop(event:Event):void
 		{
@@ -316,6 +321,10 @@
 			{
 				loader._loader = null;
 			}
+		}
+		public function clear():void
+		{
+			backHandler(null);
 		}
 		
 	}

@@ -50,7 +50,7 @@ package pages
 			var contain:Sprite = new Sprite();
 			drag.target = contain;
 			drag.x = 97;
-			drag.y = 50;
+			drag.y = 40;//50
 			
 			whiteBorder.y = drag.y - 20;
 			whiteBorder.x = drag.x;
@@ -238,9 +238,9 @@ package pages
 		public function clearAll():void
 		{
 			detailSprte.visible = false;
-			if(detailView && detailView.parent)
+			if(detailView)
 			{
-				detailView.parent.removeChild(detailView);
+				detailView.clear();
 			}
 			drag.reset();
 		}

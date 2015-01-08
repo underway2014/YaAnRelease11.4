@@ -46,7 +46,7 @@ package pages
 			var backBtn:CButton = new CButton(arr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 90;
+			backBtn.x = YAConst.SCREEN_WIDTH - 84;
 			backBtn.y = 20;
 			
 //			var timer:Timer = new Timer(100,1);
@@ -71,7 +71,7 @@ package pages
 			detailSprite.visible = false;
 			detailSprite.addChild(scroller);
 			dbg.x = scroller.x = 177;
-			dbg.y = scroller.y = 30;
+			dbg.y = scroller.y = 35;
 //			
 //			var carr:Array = ["source/public/close.png","source/public/close.png"];
 //			var closeBtn:CButton = new CButton(carr,false,false);
@@ -80,18 +80,20 @@ package pages
 //			closeBtn.x = 1574 + 177 - 72 + 35;
 //			closeBtn.y = 0;
 			
-			var arr1:Array = ["source/public/back_up.png","source/public/back_up.png"];
-			var backBtn1:CButton = new CButton(arr,false);
-			backBtn1.addEventListener(MouseEvent.CLICK,closeDetail);
-			addChild(backBtn1);
-			backBtn1.x = YAConst.SCREEN_WIDTH - 84;
-			backBtn1.y = 20;
+//			var arr1:Array = ["source/public/back_up.png","source/public/back_up.png"];
+			closeDetailBtn = new CButton(arr,false);
+			closeDetailBtn.addEventListener(MouseEvent.CLICK,closeDetail);
+			detailSprite.addChild(closeDetailBtn);
+			closeDetailBtn.x = YAConst.SCREEN_WIDTH - 84;
+			closeDetailBtn.y = 20;
+//			closeDetailBtn.visible = false;
 			
 //			detailSprite.x = 115;
 //			detailSprite.y = 50;
 			
 			initContent();
 		}
+		private var closeDetailBtn:CButton;
 		private var scroller:HScroller;
 		private function timerYcHandler(event:TimerEvent):void
 		{

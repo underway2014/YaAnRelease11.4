@@ -17,7 +17,9 @@ package views
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
+	import core.date.CDate;
 	import core.loadEvents.CLoaderMany;
+	import core.string.StringSlice;
 	
 	/**
 	 *加载FLV 
@@ -110,13 +112,15 @@ package views
 			rsprite.y = 10;
 			controlSprite.addChild(rsprite);
 			var rbg:Shape = new Shape();
-			rbg.graphics.beginFill(0xffffff,.3);
+			rbg.graphics.lineStyle(2,0xffffff,.2);
+			rbg.graphics.beginFill(0xffffff,.2);
 			rbg.graphics.drawRoundRect(-10,-10,712 + 210,38,38,38);
 			rbg.graphics.endFill();
 			rsprite.addChild(rbg);
 			
 			
 			var proShape:Shape = new Shape();
+			
 			proShape.graphics.beginFill(0x000000);
 			proShape.graphics.drawRoundRect(0,0,712,19,20,20);
 			proShape.graphics.endFill();
@@ -139,18 +143,31 @@ package views
 			proView.y = -40;
 			
 			
-			var txtFormat:TextFormat = new TextFormat(null,23,0xffffff,true);
+			txtFormat = new TextFormat(null,23,0xffffff,true);
 			var txt:TextField = new TextField();
 			txt.text = "雅安宣传片欣赏";
 			txt.width = 170;
 			txt.setTextFormat(txtFormat);
 			txt.selectable = false;
-			rsprite.addChild(txt);
-			txt.y = -5;
-			txt.x = 712 + 10;
+			this.addChild(txt);
+			txt.x = 30;
+			txt.y = 30;
+//			rsprite.addChild(txt);
+//			txt.y = -5;
+//			txt.x = 712 + 10;
 			
 //			maskShape.x = 63;
 //			maskShape.y = 40;
+			
+			timePro = new TextField();
+			timePro.selectable = false;
+			timePro.width = 170;
+			rsprite.addChild(timePro);
+			timePro.text = "";
+			timePro.y = -5;
+			timePro.x = 712 + 30;
+			timePro.setTextFormat(txtFormat);
+			
 			
 			var closeArr:Array = ["source/public/video_close.png","source/public/video_close.png"];
 			var closeBtn:CButton = new CButton(closeArr,false,false,false);
@@ -165,6 +182,8 @@ package views
 //			bottomBg.y = _height - 10;
 //			bottomBg.x = (_width - 1430) / 2;
 		}
+		private var txtFormat:TextFormat;
+		private var timePro:TextField;
 		private var proView:ProgressView;
 		private var maskShape:Shape;
 		private var controlSprite:Sprite;
@@ -236,6 +255,9 @@ package views
 			
 			proView.text = Math.floor(stream.time/duration * 100) + "%";
 			proView.x = longS - 30;
+			
+			timePro.text = CDate.timeFormate(stream.time) + " / " + CDate.timeFormate(duration);
+			timePro.setTextFormat(txtFormat);
 		}
 		
 		private var dragRect:Rectangle;
@@ -438,6 +460,8 @@ package views
 		{ 
 			trace("metadata"); 
 			duration=infoObject.duration;//获取总时间 
+			
+			timePro.text = "00:00 / " + CDate.timeFormate(duration);
 		}
 		
 		public function get loop():Boolean

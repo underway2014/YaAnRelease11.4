@@ -27,19 +27,19 @@ package views
 			addChild(bg);
 			var bgBorer:Shape = new Shape();
 			bgBorer.graphics.beginFill(0xf6f6f6);
-			bgBorer.graphics.drawRoundRect(0,0,1740,960,20,20);
+			bgBorer.graphics.drawRoundRect(0,0,1740,955,20,20);
 			bgBorer.graphics.endFill();
 			addChild(bgBorer);
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
-			var scroller:HScroller = new HScroller(1740,930,sbar);
+			var scroller:HScroller = new HScroller(1740,925,sbar);
 			contain = new Sprite();
 			scroller.target = contain;
 			addChild(scroller);
-			scroller.y = 30;
+			scroller.y = 35;
 			scroller.x = (YAConst.SCREEN_WIDTH - 1740) / 2;
 			scroller.barX = 1740 + 27;
 			bgBorer.x = (YAConst.SCREEN_WIDTH - 1740) / 2;
-			bgBorer.y = 15;
+			bgBorer.y = 20;
 			
 //			var carr:Array = ["source/public/close.png","source/public/close.png"];
 //			var closeDetailBtn:CButton = new CButton(carr,false,false);

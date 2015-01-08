@@ -32,6 +32,8 @@ package Json
 	import models.PointMd;
 	import models.PublicMd;
 	import models.TelMd;
+	import models.TravelItemMd;
+	import models.TravelPicMd;
 	import models.WldItemDetailMd;
 	import models.WldItemMd;
 	import models.WldMd;
@@ -80,6 +82,7 @@ package Json
 		private var activeMd:ActiveMd;
 		private var eatfood:EatFoodMd;
 		private var telMd:TelMd;
+		private var travelArr:Array;
 		private var allSpotsArr:Vector.<PointMd> = new Vector.<PointMd>;
 		private function parseSource(data):void
 		{
@@ -404,6 +407,37 @@ package Json
 				eatfood.businessMd.itemArr.push(altmd);
 			}
 			
+			// 游区县
+			travelArr = new Array();
+//			var traveData:Object = data.TRAVEL;
+			var travelItem:TravelItemMd;
+			for each(var tro:Object in data.TRAVEL)
+			{
+				travelItem = new TravelItemMd();
+				travelItem.name = tro.name;
+				travelItem.icon = tro.icon;
+				travelItem.desc = tro.desc;
+				travelItem.audio = tro.audio;
+				travelItem.pics = new Array();
+				var tdmd:TravelPicMd;
+				for each(var trso:Object in tro.pics)
+				{
+					tdmd = new TravelPicMd();
+					tdmd.url = trso.url;
+					tdmd.data = trso.data;
+					travelItem.pics.push(tdmd);
+				}
+				travelItem.hotspots = new Array();
+				for each(var trho:Object in tro.hotspot)
+				{
+					tdmd = new TravelPicMd();
+					tdmd.url = trho.url;
+					tdmd.data = trho.data;
+					travelItem.hotspots.push(tdmd);
+				}
+				travelArr.push(travelItem);
+			}
+			
 			// 电话簿
 			
 			telMd = new TelMd();
@@ -450,6 +484,10 @@ package Json
 		public function getMctData():MtcMd
 		{
 			return mtcMd;
+		}
+		public function getTravelData():Array
+		{
+			return travelArr;
 		}
 	}
 }

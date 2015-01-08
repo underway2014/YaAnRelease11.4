@@ -49,7 +49,7 @@ package pages
 			contain = new Sprite();
 			var hscroller:HScroller = new HScroller(YAConst.SCREEN_WIDTH - YAConst.SCROLLBAR_RHGITH_MARGIN,YAConst.SCREEN_HEIGHT  - 130,null);
 			hscroller.target = contain;
-			hscroller.y = 30;
+			hscroller.y = 20;
 			addChild(hscroller);
 			
 			detailContain = new Sprite();

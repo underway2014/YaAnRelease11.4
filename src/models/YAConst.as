@@ -15,14 +15,15 @@ package models
 		
 		
 		//第一模块类型
-		public static const MODE_SJD:String = "sjd";
-		public static const MODE_KGL:String = "kgl";
-		public static const MODE_CMS:String = "cms";
-		public static const MODE_WLD:String = "wld";
-		public static const MODE_YHD:String = "yhd";
-		public static const MODE_MTC:String = "mtc";
-		public static const MODE_CJT:String = "cjt";
-		public static const MODE_DHB:String = "dhb";
+		public static const MODE_SJD:String = "sjd";//赏景点
+		public static const MODE_KGL:String = "kgl";//看攻略
+		public static const MODE_CMS:String = "cms";//吃美食
+		public static const MODE_WLD:String = "wld";//玩乐地
+		public static const MODE_YHD:String = "yhd";//有活动
+		public static const MODE_MTC:String = "mtc";//买特产
+		public static const MODE_CJT:String = "cjt";//查交通
+		public static const MODE_DHB:String = "dhb";//电话
+		public static const MODE_YQX:String = "yqx";//游区县
 		
 		
 		public static const SJD:int = 0;
@@ -31,8 +32,9 @@ package models
 		public static const WLD:int = 3;
 		public static const YHD:int = 4;
 		public static const MTC:int = 5;
-		public static const CJT:int = 6;
+		public static const CJT:int = 8;//替换成游区县
 		public static const DHB:int = 7;
+		public static const YQX:int = 6;
 		
 	}
 }

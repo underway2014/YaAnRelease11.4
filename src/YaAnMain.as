@@ -36,6 +36,7 @@ package
 	import pages.LinePage;
 	import pages.MtcPage;
 	import pages.TelPage;
+	import pages.TravelPage;
 	import pages.WldPage;
 	
 	import views.CMapView;
@@ -46,9 +47,9 @@ package
 		public function YaAnMain()
 		{
 //			Mouse.hide();
-//			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
-//			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
-//			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
+			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
+			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
+			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
 			initData();
 			
 			this.addEventListener(Cevent.PAGEINIT_COMPLETE,pageInitComplete);
@@ -224,6 +225,7 @@ package
 		}
 		private var linePage:LinePage;
 		private var kmjPage:KmjPage;
+		private var travelPage:TravelPage;
 		private var mapView:CMapView;
 		private var wldPage:WldPage;
 		private var mtcPage:MtcPage;
@@ -235,6 +237,9 @@ package
 		private function changeHandler(event:Event):void
 		{
 			var t:CButton = group.getCurrentObj() as CButton;
+			
+			
+			
 			switch(t.data)
 			{
 				case YAConst.SJD:
@@ -300,14 +305,25 @@ package
 						clear(mtcPage);
 					}
 					break;
-				case YAConst.CJT:
-					if(!mapView)
+//				case YAConst.CJT:
+//					if(!mapView)
+//					{
+//						mapView = new CMapView(new Point(103.0119,29.9848),new Point(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT),14);
+//						modeContain.addChild(mapView);
+//						willShowMode = mapView;
+//					}else{
+//						clear(mapView);
+//					}
+//					break;
+				case YAConst.YQX:
+					if(!travelPage)
 					{
-						mapView = new CMapView(new Point(103.0119,29.9848),new Point(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT),14);
-						modeContain.addChild(mapView);
-						willShowMode = mapView;
+						travelPage = new TravelPage(json.getTravelData());
+						travelPage.spotsArray = json.getKmjData().pointArr;
+						modeContain.addChild(travelPage);
+						willShowMode = travelPage;
 					}else{
-						clear(mapView);
+						clear(travelPage);
 					}
 					break;
 				case YAConst.DHB:

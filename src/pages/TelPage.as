@@ -54,7 +54,7 @@ package pages
 			loop = new LoopAtlas(imgArr,false);
 			loop.size = new Point(1666,869);
 			loop.x = (YAConst.SCREEN_WIDTH - loop.size.x) / 2;
-			loop.y = 50;
+			loop.y = 60;
 			addChild(loop);
 			
 			var barr:Array = ["source/public/back_up.png","source/public/back_up.png"];
