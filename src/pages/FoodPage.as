@@ -11,6 +11,7 @@ package pages
 	import core.baseComponent.LoopAtlas;
 	import core.interfaces.PageClear;
 	import core.loadEvents.Cevent;
+	import core.tween.TweenLite;
 	
 	import models.AtlaMd;
 	import models.EatFoodMd;
@@ -47,6 +48,7 @@ package pages
 		{
 			var btn:CButton;
 			var i:int = 0;
+			btnArray = [];
 			for each(var arr:Array in eatmd.btnArr)
 			{
 				btn = new CButton(arr,false,false);
@@ -55,6 +57,7 @@ package pages
 				btn.addEventListener(MouseEvent.CLICK,clickHandler);
 				btn.x = beginX + i * 640;
 				addChild(btn);
+				btnArray.push(btn);
 				i++;
 			}
 			
@@ -88,6 +91,19 @@ package pages
 		private function dispatchHandler(event:Event):void
 		{
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
+			autoMove();
+		}
+		private var btnArray:Array;
+		private function autoMove():void
+		{
+			var n:int = 0;
+			var delayT:Number = 0;
+			for each(var ob:Sprite in btnArray)
+			{
+				delayT = n * .4;
+				TweenLite.from(ob,1,{x:2000,delay:delayT});
+				n++;
+			}
 		}
 		private function timerComplete(event:TimerEvent):void
 		{
@@ -223,6 +239,7 @@ package pages
 		}
 		public function show():void
 		{
+			autoMove();
 			this.visible = true;
 		}
 	}

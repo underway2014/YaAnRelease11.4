@@ -250,7 +250,7 @@ package
 						willShowMode = kmjPage;
 					}else{
 						if(currentMode && currentMode != kmjPage)
-						kmjPage.autoFall();
+//						kmjPage.autoFall();
 						clear(kmjPage);
 					}
 					break;

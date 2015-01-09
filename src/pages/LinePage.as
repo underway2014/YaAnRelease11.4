@@ -12,6 +12,7 @@ package pages
 	import core.baseComponent.LoopAtlas;
 	import core.interfaces.PageClear;
 	import core.loadEvents.Cevent;
+	import core.tween.TweenLite;
 	
 	import models.LineItemMd;
 	import models.LineMd;
@@ -85,6 +86,7 @@ package pages
 			var sArr:Array = new Array();
 			var psprite:Sprite;
 			
+			btnArray = [];
 			var pageImg:CImage;
 			var i:int = 0;
 			var beginX:int = 172
@@ -95,14 +97,18 @@ package pages
 				var btn:CButton;
 				for each(var pimd:LineItemMd in pmd.itemArr)
 				{
-					btn = new CButton(pimd.skin,false,false);
-					btn.x = beginX + (512 + 20) * i;
-					btn.y = 100;
+					btn = new CButton(pimd.skin,true,false);
+					btn.x = beginX + (512 + 20) * i + 256;
+					btn.y = 100 + 128;
 					pimd.bg = pmd.bg;
 					btn.data = pimd;
 					psprite.addChild(btn);
 					btn.addEventListener(MouseEvent.CLICK,clickHandler);
 					i++;
+					if(btnArray.length < 3)
+					{
+						btnArray.push(btn);
+					}
 				}
 				sArr.push(psprite);
 			}
@@ -115,9 +121,28 @@ package pages
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 			timer.start();
 		}
+		private var btnArray:Array;
+		private var k:int = 0;
+		private function autoMove():void
+		{
+			k = 0;
+			var nbtn:CButton = btnArray[k];
+			var delayT:Number = 0;
+			for each(var nb:Sprite in btnArray)
+			{
+				delayT = k * .4;
+				TweenLite.from(nb,1,{rotationX:500,alpha:.0,x:1400,y:100,scaleX:.1,scaleY:.1,delay:delayT,onComplete:moveOver});
+				k++;
+			}
+		}
+		private function moveOver():void
+		{
+			trace("line move over..");
+		}
 		private var timer:Timer;
 		private function dispatchHandler(event:Event):void
 		{
+			autoMove();
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
 		}
 		private function timerComplete(event:TimerEvent):void
@@ -162,11 +187,13 @@ package pages
 		}
 		public function hide():void
 		{
+			loopAtl.gotoPage(0);
 			this.visible = false;
 		}
 		public function show():void
 		{
 			this.visible = true;
+			autoMove();
 		}
 		
 	}

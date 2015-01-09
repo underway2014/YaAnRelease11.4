@@ -251,6 +251,7 @@ package pages
 		public function show():void
 		{
 			this.visible = true;
+			autoFall();
 		}
 	}
 }

@@ -11,9 +11,11 @@ package pages
 	import core.baseComponent.CImage;
 	import core.baseComponent.HScroller;
 	import core.baseComponent.LoopAtlas;
+	import core.filter.CFilter;
 	import core.interfaces.PageClear;
 	import core.loadEvents.CLoader;
 	import core.loadEvents.Cevent;
+	import core.tween.TweenLite;
 	
 	import models.WldItemMd;
 	import models.WldMd;
@@ -23,12 +25,14 @@ package pages
 	{
 		private var md:WldMd;
 		private var contain:Sprite;
+		private var moveLineContain:Sprite;
 		public function WldPage(_md:WldMd)
 		{
 			super();
 			md = _md;
 			
 			contain = new Sprite();
+			moveLineContain = new Sprite();
 			
 			var img:CImage = new CImage(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT,false,false);
 			img.url = md.background;
@@ -40,6 +44,8 @@ package pages
 			hscroll.x = 200;
 //			addChild(hscroll);
 			addChild(contain);
+			addChild(moveLineContain);
+			moveLineContain.x = 200;
 			contain.x = 200;
 			
 			var arr:Array = ["source/public/back_up.png","source/public/back_up.png"];
@@ -110,6 +116,7 @@ package pages
 		private var radius:int = 10;
 		private function initContent():void
 		{
+			btnArray = [];
 			var btn:CButton;
 			var i:int = 0;
 			var lineShape:Shape = new Shape();
@@ -133,33 +140,75 @@ package pages
 					lineShape.graphics.moveTo(892,(i - 1) * 135 + beginY + 72 + 10);
 					lineShape.graphics.lineTo(892,i * 135 + 72 + beginY - 10);
 				}
+				btn.alpha = 0;
+				btnArray.push(btn);
 			}
-			contain.addChild(lineShape);
+			moveLineContain.addChild(lineShape);
 			
 			var cirShape:CImage;
 			for(var n:int = 0;n < i;n++)
 			{
 				cirShape = new CImage(19,19,false,false);
 				cirShape.url = "source/public/playCircle.png";
-//				cirShape.graphics.beginFill(0xffffff);
-//				cirShape.graphics.drawCircle(0,0,radius);
-//				cirShape.graphics.endFill();
-				contain.addChild(cirShape);
+				moveLineContain.addChild(cirShape);
 				cirShape.x = 882;
 				cirShape.y = beginY + 72 + n * 135 - 10;
 			}
 			
-			
+			lineMask = new Shape();
+			lineMask.graphics.beginFill(0xaa0000,.3);
+			lineMask.graphics.drawRect(0,0,30,1080);
+			lineMask.graphics.endFill();
+			lineMaskBeginY = beginY + 72 - 1080 -10 + 20;
+			lineMask.y = lineMaskBeginY;
+			lineMask.x = 880 + 200;
+			this.addChild(lineMask);
+			moveLineContain.mask = lineMask;
+//			moveLineContain.mask 
 			
 			timer = new Timer(100,1);
 			timer.addEventListener(TimerEvent.TIMER,dispatchHandler);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 			timer.start();
 		}
+		private var lineMaskBeginY:int;
+		private var btnArray:Array;
+		private var lineMask:Shape;
+		private function autoMove():void
+		{
+			moveHandler();
+		}
+		private var cn:int = 0;
+		private function moveHandler():void
+		{
+			if(cn >= btnArray.length || isHiden)
+			{
+				return;
+			}
+			var bobj:Sprite = btnArray[cn];
+			bobj.filters = CFilter.shadowFilter;
+			bobj.alpha = 1;
+			var bx:int = (cn % 2) == 0 ? (-400):(1930);
+			TweenLite.from(bobj,.5,{x:bx,onComplete:moveOverHandler});
+		}
+		private function moveOverHandler():void
+		{
+			var cb:Sprite = btnArray[cn];
+			cb.filters = null;
+			var ly:int = lineMask.y + 135;
+			TweenLite.to(lineMask,.4,{y:ly,onComplete:lineMoveOver});
+			cn++;
+			moveHandler();
+		}
+		private function lineMoveOver():void
+		{
+			
+		}
 		private var timer:Timer;
 		private function dispatchHandler(event:Event):void
 		{
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
+			autoMove();
 		}
 		private function timerComplete(event:TimerEvent):void
 		{
@@ -250,13 +299,23 @@ package pages
 				detailSprite.visible = false;
 			}
 		}
+		private var isHiden:Boolean = false;
 		public function hide():void
 		{
 			this.visible = false;
+			lineMask.y = lineMaskBeginY;
+			for each(var oo:Sprite in btnArray)
+			{
+				oo.alpha = 0;
+			}
+			isHiden = true;
 		}
 		public function show():void
 		{
+			isHiden = false;
+			cn = 0;
 			this.visible = true;
+			autoMove();
 		}
 	}
 }
