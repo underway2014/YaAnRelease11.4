@@ -160,6 +160,7 @@ package pages
 			lineMask.graphics.drawRect(0,0,30,1080);
 			lineMask.graphics.endFill();
 			lineMaskBeginY = beginY + 72 - 1080 -10 + 20;
+			trace("init lineMaskBeginY = ",lineMaskBeginY);
 			lineMask.y = lineMaskBeginY;
 			lineMask.x = 880 + 200;
 			this.addChild(lineMask);
@@ -186,7 +187,7 @@ package pages
 				return;
 			}
 			var bobj:Sprite = btnArray[cn];
-			bobj.filters = CFilter.shadowFilter;
+//			bobj.filters = CFilter.shadowFilter;
 			bobj.alpha = 1;
 			var bx:int = (cn % 2) == 0 ? (-400):(1930);
 			TweenLite.from(bobj,.5,{x:bx,onComplete:moveOverHandler});
@@ -194,7 +195,7 @@ package pages
 		private function moveOverHandler():void
 		{
 			var cb:Sprite = btnArray[cn];
-			cb.filters = null;
+//			cb.filters = null;
 			var ly:int = lineMask.y + 135;
 			TweenLite.to(lineMask,.4,{y:ly,onComplete:lineMoveOver});
 			cn++;
@@ -303,7 +304,8 @@ package pages
 		public function hide():void
 		{
 			this.visible = false;
-			lineMask.y = lineMaskBeginY;
+			trace("hide lineMaskBeginY = ",lineMaskBeginY);
+			
 			for each(var oo:Sprite in btnArray)
 			{
 				oo.alpha = 0;
@@ -312,6 +314,7 @@ package pages
 		}
 		public function show():void
 		{
+			lineMask.y = lineMaskBeginY;
 			isHiden = false;
 			cn = 0;
 			this.visible = true;

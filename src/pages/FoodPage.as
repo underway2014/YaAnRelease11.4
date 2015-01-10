@@ -1,5 +1,6 @@
 package pages
 {
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -44,11 +45,14 @@ package pages
 		}
 		private var contentSprite:Sprite;
 		private var beginX:int = 0;
+		private var shapeArray:Array;
 		private function initButton():void
 		{
 			var btn:CButton;
 			var i:int = 0;
 			btnArray = [];
+			shapeArray = [];
+			var maskShape:Shape
 			for each(var arr:Array in eatmd.btnArr)
 			{
 				btn = new CButton(arr,false,false);
@@ -58,6 +62,14 @@ package pages
 				btn.x = beginX + i * 640;
 				addChild(btn);
 				btnArray.push(btn);
+				maskShape = new Shape();
+				maskShape.graphics.beginFill(0x000000,.5);
+				maskShape.graphics.drawRect(0,0,640,1080);
+				maskShape.graphics.endFill();
+				maskShape.x = beginX + i * 640;
+				shapeArray.push(maskShape);
+				addChild(maskShape);
+				
 				i++;
 			}
 			
@@ -91,7 +103,17 @@ package pages
 		private function dispatchHandler(event:Event):void
 		{
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
-			autoMove();
+//			autoMove();
+			alphaChange();
+		}
+		private function alphaChange():void
+		{
+			var kk:int = 0;
+			for each(var os:Shape in shapeArray)
+			{
+				TweenLite.to(os,1,{delay:kk,alpha:0});
+				kk += .8;
+			}
 		}
 		private var btnArray:Array;
 		private function autoMove():void
@@ -101,7 +123,7 @@ package pages
 			for each(var ob:Sprite in btnArray)
 			{
 				delayT = n * .4;
-				TweenLite.from(ob,1,{x:2000,delay:delayT});
+				TweenLite.to(ob,1,{x:2000,delay:delayT});
 				n++;
 			}
 		}
@@ -239,8 +261,13 @@ package pages
 		}
 		public function show():void
 		{
-			autoMove();
+			for each(var os:Shape in shapeArray)
+			{
+				os.alpha = .5;
+			}
+//			autoMove();
 			this.visible = true;
+			alphaChange();
 		}
 	}
 }

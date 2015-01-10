@@ -46,7 +46,7 @@ package
 	{
 		public function YaAnMain()
 		{
-//			Mouse.hide();
+			Mouse.hide();
 			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
 			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
 			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
@@ -238,8 +238,6 @@ package
 		{
 			var t:CButton = group.getCurrentObj() as CButton;
 			
-			
-			
 			switch(t.data)
 			{
 				case YAConst.SJD:
@@ -249,7 +247,7 @@ package
 						modeContain.addChild(kmjPage);
 						willShowMode = kmjPage;
 					}else{
-						if(currentMode && currentMode != kmjPage)
+//						if(currentMode && currentMode != kmjPage)
 //						kmjPage.autoFall();
 						clear(kmjPage);
 					}

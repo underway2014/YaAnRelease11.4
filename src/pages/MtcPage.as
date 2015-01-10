@@ -9,10 +9,12 @@ package pages
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
+	import core.filter.CFilter;
 	import core.interfaces.PageClear;
 	import core.layout.Group;
 	import core.loadEvents.Cevent;
 	import core.loadEvents.DataEvent;
+	import core.tween.TweenLite;
 	
 	import models.MtcItemMd;
 	import models.MtcMd;
@@ -33,9 +35,13 @@ package pages
 			bg.url = md.bg;
 			addChild(bg);
 			
+//			var onclicksprite:Sprite = new Sprite();
+			
+			bg.addEventListener(MouseEvent.CLICK,clearDesk);
+			
 			btnSprite = new Sprite();
-			btnSprite.x = 100;
-			btnSprite.y = 178;
+			btnSprite.x = 100 + 180;
+			btnSprite.y = 178 + 80;
 			addChild(btnSprite);
 			
 			var arr:Array = ["source/public/back_up.png","source/public/back_up.png"];
@@ -69,21 +75,47 @@ package pages
 		}
 		private var btnSprite:Sprite;
 		private var group:Group = new Group();
+		private var glowLine:Shape;
+		private var maskArray:Array;
 		private function init():void
 		{
 			var btn:CButton;
 			var i:int = 0;
 			var line:Shape;
+			maskArray = [];
+			var maskShape:Shape;
 			for each(var imd:MtcItemMd in md.itemArr)
 			{
-				btn = new CButton(imd.skin,false);
+				btn = new CButton(imd.skin,true);
 				btn.addEventListener(MouseEvent.CLICK,clickHandler);
 				group.add(btn);
 				btn.data = imd;
 				btn.y = i * 156;
 				btnSprite.addChild(btn);
+				
 				i++;
 			}
+			
+			maskShape = new Shape();
+			maskShape.graphics.beginFill(0xaa0000,.2);
+			maskShape.graphics.drawRect(0,0,351,156 * i);
+			maskShape.graphics.endFill();
+//			maskShape.y = i * 156;
+			
+			glowLine = new Shape();
+			glowLine.graphics.beginFill(0x7FFFD4,.3);
+			glowLine.graphics.drawRect(0,0,3,165);
+			glowLine.graphics.endFill();
+			glowLine.mask = maskShape;
+			glowLine.filters = CFilter.blueFilter;
+//			glowLine.rotationZ = 20;
+			glowLine.x = -50;
+//			btnSprite.addChild(glowLine);
+//			btnSprite.addChild(maskShape);
+			
+//			glowLine.mask = 
+			automove();
+			
 //			group.selectById(0);
 			group.addEventListener(Cevent.SELECT_CHANGE,slectHandler);
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
@@ -96,6 +128,30 @@ package pages
 		private function dispatchHandler(event:Event):void
 		{
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
+		}
+		private var nn:int = 0;
+		private function automove():void
+		{
+			nn = 0;
+			beginMove();
+		}
+		private function beginMove():void
+		{
+//			glowLine.mask = maskArray[nn];
+//			glowLine.y = nn * 156;
+//			glowLine.x = -50;
+			var delayT:Number = 0;
+			for each(var cb:Sprite in group.getItmeArr())
+			{
+				delayT = nn * .1;
+				TweenLite.from(cb,.4,{delay:delayT,x:800,scaleX:1.4,scaleY:1.4,onComplete:moveOver});
+				nn++;
+			}
+		}
+		private function moveOver():void
+		{
+//			nn++;
+//			beginMove();
 		}
 		private function timerComplete(event:TimerEvent):void
 		{
@@ -149,14 +205,14 @@ package pages
 			mtcSonView.addEventListener(DataEvent.CLICK,showDetailHandler);
 			mtcSonView.addEventListener(Event.REMOVED_FROM_STAGE,sonViewNull);
 			sonSprite.addChild(mtcSonView);
-			mtcSonView.x = btnSprite.x + 353 + 30;
+			mtcSonView.x = btnSprite.x + 353 + 30 - 180;
 			
 			arrowShape.visible = true;
 			arrowShape.x = mtcSonView.x - 20;
 			
 			var len:int = mmd.itemArr.length;
 			var cuId:int = group.getCurrentId();
-			var leftC:int = cuId * 156 + 156 / 2;
+			var leftC:int = cuId * 156 + 156 / 2 - 80;
 			arrowShape.y = leftC;
 			
 			var rHeight:int = len * 104;
@@ -210,6 +266,19 @@ package pages
 				mtcSonView = null;
 			}
 		}
+		private function clearDesk(event:MouseEvent):void
+		{
+			group.selectById(-1);
+			
+			if(mtcSonView && mtcSonView.parent)
+			{
+				mtcSonView.parent.removeChild(mtcSonView);
+			}
+			if(arrowShape)
+			{
+				arrowShape.visible = false;
+			}
+		}
 		public function clearAll():void
 		{
 			closeGrandView(null);
@@ -230,6 +299,7 @@ package pages
 		public function show():void
 		{
 			this.visible = true;
+			automove();
 		}
 	}
 }
