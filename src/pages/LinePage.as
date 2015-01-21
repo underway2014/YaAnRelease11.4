@@ -4,6 +4,7 @@ package pages
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.utils.Timer;
 	
 	import core.baseComponent.CButton;
@@ -14,11 +15,14 @@ package pages
 	import core.loadEvents.Cevent;
 	import core.tween.TweenLite;
 	
+	import models.KmjPointMd;
+	import models.LinSpotNameMd;
 	import models.LineItemMd;
 	import models.LineMd;
 	import models.LinePageMd;
 	import models.YAConst;
 	
+	import views.KmjDetailView;
 	import views.LineView;
 	
 	
@@ -30,6 +34,9 @@ package pages
 		private var alphaMask:Sprite;
 		private var drag:CDrag;
 		private var contain:Sprite;
+		public var spotsArray:Array;
+		private var nameContain:Sprite;
+		private var spotContain:Sprite;
 		public function LinePage(_lineData:LineMd)
 		{
 			super();
@@ -40,20 +47,184 @@ package pages
 			bgImg.url = lineData.bg;
 			addChild(bgImg);
 			
+			nameContain = new Sprite();
+			addChild(nameContain);
+			
 			contain = new Sprite();
 //			drag = new CDrag(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT);
 //			drag.target = contain;
 			addChild(contain);
 			
+			
+			
 			var arr:Array = ["source/public/back_up.png","source/public/back_up.png"];
 			var backBtn:CButton = new CButton(arr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 90;
-			backBtn.y = 20;
+			backBtn.x = YAConst.BACKBUTTONX;
+			backBtn.y = YAConst.BACKBUTTONY;
 			
 			init();
+			initNameButton();
 			
+		}
+		private function initNameButton():void
+		{
+			var nbtn:CButton;
+			nameBtnArr = [];
+			for each(var nmd:LinSpotNameMd in lineData.spotsArr)
+			{
+				nbtn = new CButton([nmd.pic,nmd.pic],true,false);
+				nbtn.data = int(nmd.data);
+				nbtn.addEventListener(MouseEvent.CLICK,enterSpot);
+				nameContain.addChild(nbtn);
+				nameBtnArr.push(nbtn);
+				randomCoor(nbtn);
+			}
+			
+			var nameTimer:Timer = new Timer(1000 * 10);
+			nameTimer.addEventListener(TimerEvent.TIMER,nameAutoMove);
+			nameTimer.start();
+		}
+		private var nameBtnArr:Array;
+		private function nameAutoMove(event:TimerEvent):void
+		{
+			var rd:int = Math.floor(Math.random() * nameBtnArr.length);
+			var rd2:int = 0;
+			if(rd > 1)
+			{
+				rd2 = rd -1;
+			}else{
+				rd2 = rd + 1;
+			}
+			
+			var b1:CButton = nameBtnArr[rd];
+			if(!b1.isMoveing && isMovingNum < 2)
+			{
+				singleMove(b1);
+				isMovingNum++;
+			}
+			
+			var b2:CButton = nameBtnArr[rd2];
+			if(!b2.isMoveing && isMovingNum < 2)
+			{
+				singleMove(b2);
+				isMovingNum++;
+			}
+			
+		}
+		private var scaleSpeed:Number = .1;
+		private var moveDis:int = 150;
+		private function singleMove(cobj:CButton):void
+		{
+			cobj.isMoveing = true;
+			var encdScale:Number;
+			var endXY:Point = new Point();
+			var disScale:Number = Math.random() / 4;
+			if(Math.random() > .4999)//+
+			{
+				encdScale = cobj.scaleX + disScale;
+				endXY.x = cobj.x + disScale * moveDis;
+			
+			}else{
+				encdScale = cobj.scaleX - disScale;
+				endXY.x = cobj.x - disScale * moveDis;
+			}
+			var r3:Number = Math.random();
+			if(r3 >= .4999)
+			{
+				endXY.y = cobj.y + r3 * moveDis;
+			}else{
+				endXY.y = cobj.y - r3 * moveDis;
+			}
+			if(endXY.x < 0)
+			{
+				endXY.x = 0;
+			}else if(endXY.x > 1200 - 100)
+			{
+				endXY.x = 1100;
+			}
+			if(endXY.y > 1080 - 100 - 100)
+			{
+				endXY.y = 800;
+			}else if(endXY.y <= 350)
+			{
+				endXY.y = 350;
+			}
+			
+			if(encdScale > 1.25)
+			{
+				encdScale = 1.25;
+			}else if(encdScale < .75){
+				encdScale = .75;
+			}
+			
+			TweenLite.to(cobj,4,{scaleX:encdScale,scaleY:encdScale,alpha:encdScale,x:endXY.x,y:endXY.y,onComplete:moveOverHandler,onCompleteParams:[cobj]});
+		}
+		private var isMovingNum:int = 0;
+		private function moveOverHandler(ocb:CButton):void
+		{
+			if(checkoutIsDJ(ocb))
+			{
+				singleMove(ocb);
+			}else{
+				ocb.isMoveing = false;	
+				isMovingNum--;
+			}
+		}
+
+		/*是否叠加到一起了，
+		 * 
+		*/
+		private function checkoutIsDJ(nobj:CButton):Boolean//
+		{
+			for each(var nb:CButton in nameBtnArr)
+			{
+				if(nobj != nb && !nb.isMoveing)
+				{
+					if(nobj.hitTestObject(nb))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		private function randomCoor(obj:Sprite):void
+		{
+			var scaleXY:int = 0;
+			obj.x = Math.random() * (YAConst.SCREEN_WIDTH - 800) + 70;
+			obj.y = Math.random() * (YAConst.SCREEN_HEIGHT - 500) + 400;
+			scaleXY = int(Math.random() / 5 * 100);
+			if(Math.random() > .499)
+			{
+				obj.alpha = obj.scaleX = obj.scaleY = 1 - scaleXY / 100.0;
+				
+			}else{
+				obj.scaleX = obj.scaleY = 1 + scaleXY / 100.0;
+			}
+		}
+		private var spotDetailView:KmjDetailView;
+		private function enterSpot(event:MouseEvent):void
+		{
+			var cb:CButton = event.currentTarget as CButton;
+			trace(cb.data);
+			if(spotsArray && spotsArray.length > cb.data)
+			{
+				var hmd:KmjPointMd = spotsArray[cb.data];
+				spotDetailView = new KmjDetailView(hmd.detailmd);
+				spotDetailView.addEventListener(Event.REMOVED_FROM_STAGE,clearDetailView);
+				spotContain.addChild(spotDetailView);
+				spotContain.visible = true;
+			}
+		}
+		private function clearDetailView(event:Event):void
+		{
+			if(spotDetailView)
+			{
+				spotDetailView = null;
+			}
+			spotContain.visible = false;
 		}
 		private function initPageButton():void
 		{
@@ -65,9 +236,11 @@ package pages
 			
 			addChild(nextBtn);
 			addChild(prevBtn);
-			nextBtn.y = prevBtn.y = (YAConst.SCREEN_HEIGHT - 90 - 88) / 2;
+			nextBtn.y = prevBtn.y = 184;
 			nextBtn.x = YAConst.SCREEN_WIDTH - 84;
 			
+			spotContain = new Sprite();
+			addChild(spotContain);
 			
 		}
 		private function pageHandler(event:MouseEvent):void
@@ -131,7 +304,7 @@ package pages
 			for each(var nb:Sprite in btnArray)
 			{
 				delayT = k * .4;
-				TweenLite.from(nb,1,{rotationX:500,alpha:.0,x:1400,y:100,scaleX:.1,scaleY:.1,delay:delayT,onComplete:moveOver});
+				TweenLite.from(nb,.7,{rotationX:500,alpha:.0,x:1000,y:100,scaleX:.1,scaleY:.1,delay:delayT,onComplete:moveOver});
 				k++;
 			}
 		}
@@ -183,6 +356,10 @@ package pages
 			if(detailView)
 			{
 				detailView.parent.removeChild(detailView);
+			}
+			if(spotDetailView)
+			{
+				spotDetailView.clear();
 			}
 		}
 		public function hide():void

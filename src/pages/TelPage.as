@@ -46,13 +46,13 @@ package pages
 			var imgArr:Array = new Array();
 			for each(var url:String in md.contentArr)
 			{
-				img = new CImage(1500,1080,true,false);
+				img = new CImage(1381,925,true,false);
 				img.url = url;
 				imgArr.push(img);
 			}
 			
 			loop = new LoopAtlas(imgArr,false);
-			loop.size = new Point(1500,1080);
+			loop.size = new Point(1381,925);
 //			loop.size = new Point(1666,869);
 			loop.x = (YAConst.SCREEN_WIDTH - loop.size.x) / 2;
 //			loop.y = 60;
@@ -62,8 +62,8 @@ package pages
 			var backBtn:CButton = new CButton(barr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 84;
-			backBtn.y = 20;
+			backBtn.x = YAConst.BACKBUTTONX;
+			backBtn.y = YAConst.BACKBUTTONY;
 			this.dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
 			initPageButton();
 		}

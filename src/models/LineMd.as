@@ -9,5 +9,6 @@ package models
 		public var bg:String;
 		public var desc:String;
 		public var pageArr:Array;
+		public var spotsArr:Array;
 	}
 }

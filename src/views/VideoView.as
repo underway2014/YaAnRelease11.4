@@ -19,7 +19,6 @@ package views
 	import core.baseComponent.CImage;
 	import core.date.CDate;
 	import core.loadEvents.CLoaderMany;
-	import core.string.StringSlice;
 	
 	/**
 	 *加载FLV 
@@ -64,6 +63,8 @@ package views
 			
 			_width = w;
 			_height = h;
+			
+			txtFormat = new TextFormat(null,23,0xffffff,true);
 			
 //			if(showBar&&controlArr)
 //			{
@@ -143,15 +144,7 @@ package views
 			proView.y = -40;
 			
 			
-			txtFormat = new TextFormat(null,23,0xffffff,true);
-			var txt:TextField = new TextField();
-			txt.text = "雅安宣传片欣赏";
-			txt.width = 170;
-			txt.setTextFormat(txtFormat);
-			txt.selectable = false;
-			this.addChild(txt);
-			txt.x = 30;
-			txt.y = 30;
+			
 //			rsprite.addChild(txt);
 //			txt.y = -5;
 //			txt.x = 712 + 10;
@@ -182,6 +175,7 @@ package views
 //			bottomBg.y = _height - 10;
 //			bottomBg.x = (_width - 1430) / 2;
 		}
+		private var _videoName:String
 		private var txtFormat:TextFormat;
 		private var timePro:TextField;
 		private var proView:ProgressView;
@@ -310,17 +304,23 @@ package views
 		private var _volume:Number;	//音量大小
 		public function videoPauseHandler(event:MouseEvent):void
 		{
-			if(!isPause)
+			if(isPlayOver)
 			{
-				stream.pause();
-				sliderSprite.removeEventListener(Event.ENTER_FRAME,updateSlider);
-				isPause = true;
-			}
-			else
-			{
-				stream.resume();
-				sliderSprite.addEventListener(Event.ENTER_FRAME,updateSlider);
-				isPause = false;
+				stream.play(url);
+				isPlayOver = false;
+			}else{
+				if(!isPause)
+				{
+					stream.pause();
+					sliderSprite.removeEventListener(Event.ENTER_FRAME,updateSlider);
+					isPause = true;
+				}
+				else
+				{
+					stream.resume();
+					sliderSprite.addEventListener(Event.ENTER_FRAME,updateSlider);
+					isPause = false;
+				}
 			}
 		}
 		private function netStatusHandler(event:NetStatusEvent):void
@@ -342,6 +342,7 @@ package views
 					}
 					else
 					{
+//						reset();
 						dispatchEvent(new Event(VIDEO_PLAY_OVER));
 						trace("player over.....");
 						if(!_isList)
@@ -350,6 +351,7 @@ package views
 					break;
 			}
 		}
+		private var isPlayOver:Boolean = false;
 		/**
 		 * 循环播放
 		 */		
@@ -416,24 +418,33 @@ package views
 		 * **/
 		public function playOverHandler():void
 		{
+			isPause = false;
+			isPlayOver = true;
 			stopBtn.select(false);
-			close();	
+//			close();
+			clear();
 		}
 		private function closeVideoHandler(event:MouseEvent):void
 		{
+			if(stream)
+			{
+				stream.close();
+			}
 			if(this.parent)
 			{
+				this.parent.visible = false;
 				this.parent.removeChild(this);
 			}
 		}
 		public function clear():void
 		{
-			stream.close();
+//			stream.close();
+			closeVideoHandler(null);
 		}
-		public function close():void
-		{
-			stream.close();
-		}
+//		public function close():void
+//		{
+//			stream.close();
+//		}
 		
 		public function get url():String
 		{
@@ -463,7 +474,6 @@ package views
 			
 			timePro.text = "00:00 / " + CDate.timeFormate(duration);
 		}
-		
 		public function get loop():Boolean
 		{
 			return _loop;
@@ -501,6 +511,26 @@ package views
 		public function set volume(value:Number):void
 		{
 			_volume = value;
+		}
+
+		public function get videoName():String
+		{
+			return _videoName;
+		}
+
+		public function set videoName(value:String):void
+		{
+			_videoName = value;
+			
+			
+			var txt:TextField = new TextField();
+			txt.text = value;//"雅安宣传片欣赏";
+			txt.width = 270;
+			txt.setTextFormat(txtFormat);
+			txt.selectable = false;
+			this.addChild(txt);
+			txt.x = 30;
+			txt.y = 30;
 		}
 		
 		

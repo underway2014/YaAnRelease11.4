@@ -62,8 +62,8 @@
 			var backBtn:CButton = new CButton(arr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 84;
-			backBtn.y = 20;
+			backBtn.x = YAConst.BACKBUTTONX;
+			backBtn.y = YAConst.BACKBUTTONY;
 			
 			initHead();
 			navContain = new Sprite();

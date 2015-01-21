@@ -15,6 +15,7 @@ package pages
 	import models.AtlaMd;
 	import models.ButtonMd;
 	import models.HomeMD;
+	import models.PublicMd;
 	import models.WeatherMd;
 	import models.YAConst;
 	
@@ -24,6 +25,7 @@ package pages
 	{
 		private var contentSprite:Sprite;
 		private var loopAtlas:LoopAtlas;
+		public static const HOME_LOOP_PLAYOVER:String = "homeloopplayover";
 		public function HomePage(arr:Vector.<HomeMD>)
 		{
 			super();
@@ -65,6 +67,7 @@ package pages
 			loopAtlas = new LoopAtlas(imgArr,true);
 //			loopAtlas.addEventListener(DataEvent.CLICK,enterHandler);
 			addChild(loopAtlas);
+			loopAtlas.addEventListener(LoopAtlas.PLAY_OVER,loopPlayOver);
 			
 			initPageButton();
 			
@@ -75,6 +78,11 @@ package pages
 			videoContain.graphics.drawRect(0,0,YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT);
 			videoContain.graphics.endFill();
 			
+		}
+		private function loopPlayOver(event:Event):void
+		{
+			trace("get loop play over event");
+			dispatchEvent(new Event(HOME_LOOP_PLAYOVER));
 		}
 		private var videoContain:Sprite;
 		private var tianqiImg:CImage;
@@ -152,6 +160,8 @@ package pages
 //			this.dispatchEvent(cdata);
 			videoContain.visible = true;
 			videoView = new VideoView();
+			videoView.videoName = "雅安宣传片欣赏";
+//			videoView.loop = true;
 			videoView.addEventListener(Event.REMOVED_FROM_STAGE,clearVideo);
 			videoView.addEventListener(VideoView.VIDEO_PLAY_OVER,playOverHandler);
 			videoView.url = cb.data;
@@ -162,17 +172,22 @@ package pages
 		private function playOverHandler(event:Event):void
 		{
 			clearVideo(null);
+			videoView = null;
 		}
 		private function clearVideo(event:Event):void
 		{
-			videoView.clear();
-			videoContain.visible = false;
+//			videoView.clear();
+//			videoContain.visible = false;
 		}
 		private var imgArr:Array;
 		private function next():void
 		{
 			
 			
+		}
+		public function loopReset():void
+		{
+			loopAtlas.gotoPage(0);
 		}
 		public function clearAll():void
 		{

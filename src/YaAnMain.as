@@ -21,6 +21,7 @@ package
 	import core.layout.Group;
 	import core.loadEvents.Cevent;
 	import core.loadEvents.DataEvent;
+	import core.timer.TimerDevice;
 	
 	import models.HomeMD;
 	import models.KmjMd;
@@ -46,13 +47,39 @@ package
 	{
 		public function YaAnMain()
 		{
-			Mouse.hide();
+//			Mouse.hide();
 			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
 			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
 			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
 			initData();
 			
 			this.addEventListener(Cevent.PAGEINIT_COMPLETE,pageInitComplete);
+			
+			this.addEventListener(MouseEvent.CLICK,screenClickHandler);
+			
+			var checkTimer:Timer = new Timer(1000 * 3);
+			checkTimer.addEventListener(TimerEvent.TIMER,checktimerHandler);
+			checkTimer.start();
+		}
+		private var howlongtime_check:int = 1000 * 6;//无人操作时间设定
+		private var pageStayTime:int = 1000 * 10; // 自动播放时页面的停留时间
+		private var isNoPersonUse:Boolean = false;
+		private function checktimerHandler(event:TimerEvent):void
+		{
+			if(TimerDevice.check(howlongtime_check))
+			{
+				isNoPersonUse = true;
+			}
+		}
+		private function screenClickHandler(event:MouseEvent):void
+		{
+			trace(".screen click..");
+			isNoPersonUse = isAutoChangePage = false;
+			if(autoTimer)
+			{
+				autoTimer.stop();
+			}
+			TimerDevice.resetTime();
 		}
 		private var json:ParseJSON;
 		private var weatherData:WeatherXmlLoader
@@ -122,6 +149,7 @@ package
 			var homeArr:Vector.<HomeMD> = json.getHomeData();
 			home = new HomePage(homeArr);
 			home.addEventListener(DataEvent.CLICK,enterHandler);
+			home.addEventListener(HomePage.HOME_LOOP_PLAYOVER,homeLoopPlayOver);
 			addChild(home);
 			
 			
@@ -155,6 +183,48 @@ package
 			
 			this.addEventListener("backHome",backHomeHandler);
 		}
+		private var isAutoChangePage:Boolean = false;
+		
+		private function homeLoopPlayOver(event:Event):void
+		{
+			if(isAutoChangePage)
+			{
+				return;
+			}
+			trace("home loop get play Over event");
+			if(isNoPersonUse && !isAutoChangePage)
+			{
+				isAutoChangePage = true;
+				autoTimer = new Timer(pageStayTime);
+				autoTimer.addEventListener(TimerEvent.TIMER,autoChangePageHandler);
+				autoTimer.addEventListener(TimerEvent.TIMER_COMPLETE,autoTimerComplete);
+				autoTimer.start();
+			}
+		}
+		private function autoTimerComplete(event:TimerEvent):void
+		{
+			if(autoTimer)
+			autoTimer = null;
+		}
+		private function autoChangePageHandler(event:TimerEvent):void
+		{
+			if(!isNoPersonUse)
+			{
+				if(autoTimer)
+				autoTimer.stop();
+			}
+			if(autoTimer.currentCount > 8)
+			{
+				home.loopReset();
+				autoTimer.stop();
+				group.selectById(-1);
+				clear();
+				isAutoChangePage = false;
+				return;
+			}
+			group.selectById((autoTimer.currentCount - 1) % 8); 
+		}
+		private var autoTimer:Timer;
 		private var modeContain:Sprite;
 		private var btnContain:Sprite;
 		private var btnNameArr:Array = ["赏景点","看攻略","尝美食","玩乐地","有活动","买特产","查交通","电话簿"];
@@ -256,6 +326,7 @@ package
 					if(!linePage)
 					{
 						linePage = new LinePage(json.getLineData());
+						linePage.spotsArray = json.getKmjData().pointArr;
 						modeContain.addChild(linePage);
 						willShowMode = linePage;
 					}else{
@@ -352,7 +423,7 @@ package
 			trace("tel ok");
 		}
 		private var isExist:Boolean = false;
-		private function clear(ss:PageClear):void
+		private function clear(ss:PageClear = null):void
 		{
 			home.clearAll();
 			var citem:PageClear;

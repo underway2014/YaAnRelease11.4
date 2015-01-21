@@ -8,6 +8,9 @@ package models
 		public static const SCREEN_WIDTH:int = 1920;
 		public static const SCREEN_HEIGHT:int = 1080;
 		
+		public static const BACKBUTTONX:int = SCREEN_WIDTH - 84;
+		public static const BACKBUTTONY:int = SCREEN_HEIGHT - 190;
+		
 		public static const SCROLLBAR_RHGITH_MARGIN:int = 80;
 		
 		

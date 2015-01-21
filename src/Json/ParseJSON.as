@@ -23,6 +23,7 @@ package Json
 	import models.KmjMd;
 	import models.KmjPointDetailMd;
 	import models.KmjPointMd;
+	import models.LinSpotNameMd;
 	import models.LineItemMd;
 	import models.LineMd;
 	import models.LinePageMd;
@@ -150,6 +151,17 @@ package Json
 			lineMd.bg = lineData.background;
 			lineMd.desc = lineData.desc;
 			lineMd.pageArr = new Array();
+			lineMd.spotsArr = new Array();
+			var snameMd:LinSpotNameMd;
+			for each(var nobj:Object in lineData.spotname)
+			{
+				snameMd = new LinSpotNameMd();
+				snameMd.name = nobj.name;
+				snameMd.data = nobj.data;
+				snameMd.pic = nobj.pic;
+				lineMd.spotsArr.push(snameMd);
+			}
+			
 			var pageMd:LinePageMd;
 			for each(var obj:Object in lineData.page)
 			{

@@ -37,8 +37,8 @@ package pages
 			var backBtn:CButton = new CButton(arrS,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = 30;
-			backBtn.y = 20;
+			backBtn.x = YAConst.BACKBUTTONX;
+			backBtn.y = YAConst.BACKBUTTONY;
 		}
 	
 		private function initContent(_arr:Array):void

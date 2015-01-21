@@ -11,7 +11,6 @@ package pages
 	import core.baseComponent.CImage;
 	import core.baseComponent.HScroller;
 	import core.baseComponent.LoopAtlas;
-	import core.filter.CFilter;
 	import core.interfaces.PageClear;
 	import core.loadEvents.CLoader;
 	import core.loadEvents.Cevent;
@@ -52,8 +51,8 @@ package pages
 			var backBtn:CButton = new CButton(arr,false);
 			backBtn.addEventListener(MouseEvent.CLICK,backHandler);
 			addChild(backBtn);
-			backBtn.x = YAConst.SCREEN_WIDTH - 84;
-			backBtn.y = 20;
+			backBtn.x = YAConst.BACKBUTTONX;
+			backBtn.y = YAConst.BACKBUTTONY;
 			
 //			var timer:Timer = new Timer(100,1);
 //			timer.addEventListener(TimerEvent.TIMER,timerYcHandler);
@@ -90,8 +89,8 @@ package pages
 			closeDetailBtn = new CButton(arr,false);
 			closeDetailBtn.addEventListener(MouseEvent.CLICK,closeDetail);
 			detailSprite.addChild(closeDetailBtn);
-			closeDetailBtn.x = YAConst.SCREEN_WIDTH - 84;
-			closeDetailBtn.y = 20;
+			closeDetailBtn.x = YAConst.BACKBUTTONX;
+			closeDetailBtn.y = YAConst.BACKBUTTONY;
 //			closeDetailBtn.visible = false;
 			
 //			detailSprite.x = 115;
@@ -190,14 +189,14 @@ package pages
 //			bobj.filters = CFilter.shadowFilter;
 			bobj.alpha = 1;
 			var bx:int = (cn % 2) == 0 ? (-400):(1930);
-			TweenLite.from(bobj,.5,{x:bx,onComplete:moveOverHandler});
+			TweenLite.from(bobj,.3,{x:bx,onComplete:moveOverHandler});
 		}
 		private function moveOverHandler():void
 		{
 			var cb:Sprite = btnArray[cn];
 //			cb.filters = null;
 			var ly:int = lineMask.y + 135;
-			TweenLite.to(lineMask,.4,{y:ly,onComplete:lineMoveOver});
+			TweenLite.to(lineMask,.3,{y:ly,onComplete:lineMoveOver});
 			cn++;
 			moveHandler();
 		}

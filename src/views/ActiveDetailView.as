@@ -28,7 +28,7 @@ package views
 			addChild(bg);
 			
 			var hcontain:Shape = new Shape();
-			hcontain.graphics.beginFill(0xf6f6f6);
+			hcontain.graphics.beginFill(0xffffff);
 			hcontain.graphics.drawRoundRect(0,0,SELF_WIDTH,SELF_HEIGHT + 30,20,20);
 			hcontain.graphics.endFill();
 			this.addChild(hcontain);
