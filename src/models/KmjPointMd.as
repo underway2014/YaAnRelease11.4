@@ -11,6 +11,7 @@ package models
 		public var name:String;
 		public var pointXY:Point;
 		public var skinArr:Array;
+		public var dir:int;
 		
 		public var detailmd:KmjPointDetailMd;
 	}

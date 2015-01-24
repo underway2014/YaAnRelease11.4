@@ -2,6 +2,7 @@ package pages
 {
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.display3D.textures.CubeTexture;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
@@ -20,6 +21,7 @@ package pages
 	import models.YAConst;
 	
 	import views.KmjDetailView;
+	import views.TravelDetalView;
 	
 	public class KmjPage extends Sprite implements PageClear
 	{
@@ -40,33 +42,33 @@ package pages
 			whiteBorder.graphics.beginFill(0xffffff);
 			whiteBorder.graphics.drawRect(0,0,1727,YAConst.SCREEN_HEIGHT - 170 + 30);
 			whiteBorder.graphics.endFill();
-			addChild(whiteBorder);
+//			addChild(whiteBorder);
 			
 			
 			var sbar:Array = ["source/public/slider.png","source/public/bar.png"];
-			drag = new HScroller(1727,YAConst.SCREEN_HEIGHT - 170,sbar);
+			drag = new HScroller(1920,YAConst.SCREEN_HEIGHT - 170,sbar);
 			addChild(drag);
 			drag.barX = drag.width + 32;
 			var contain:Sprite = new Sprite();
 			drag.target = contain;
-			drag.x = 97;
+//			drag.x = 97;
 			drag.y = 40;//50
 			
 			whiteBorder.y = drag.y - 20;
 			whiteBorder.x = drag.x;
 			
-			var mapImg:CImage = new CImage(1727,2693,false,false);
+			var mapImg:CImage = new CImage(1920,2977,false,false);
 			mapImg.url = kmjMd.map;
 			contain.addChild(mapImg);
 			
 			btnContain = new Sprite();
 			contain.addChild(btnContain);
 			
-			var explainImg:CImage = new CImage(239,137,false,false);
-			explainImg.url = "source/lookSpot/explain.png";
-			addChild(explainImg);
-			explainImg.x = 117;
-			explainImg.y = 73;
+//			var explainImg:CImage = new CImage(239,137,false,false);
+//			explainImg.url = "source/lookSpot/explain.png";
+//			addChild(explainImg);
+//			explainImg.x = 117;
+//			explainImg.y = 73;
 			
 //			var timer:Timer = new Timer(100,1);
 //			timer.addEventListener(TimerEvent.TIMER,timerHandler);
@@ -132,25 +134,55 @@ package pages
 			var btn:CButton;
 			btnArr = new Array();
 			var kk:int = 0;
+			var iconImg:CImage;
+			var j:int = 0;
 			for each(var kmd:KmjPointMd in kmjMd.pointArr)
 			{
-				btn = new CButton([kmd.skinArr[0],kmd.skinArr[0]],true,false);
+				btn = new CButton([kmd.skinArr[0],kmd.skinArr[1]],false,false);
 //				btn = new CButton(kmd.skinArr,false,false);
 //				btn.graphics.beginFill(0xaa0000,0.2);t
 //				btn.graphics.drawRect(0,0,150,65);
 //				btn.graphics.endFill();
+				
+				
+				
+				if(kmd.dir == 0)//7个区县
+				{
+					btn.x = kmd.pointXY.x - 28;
+					btn.y = kmd.pointXY.y - 36;
+					btn.data = qxdataIndexArr[j];
+					btn.addEventListener(MouseEvent.CLICK,enterQX);
+					j++;
+				}else{
+					iconImg = new CImage(43,58,false,false);
+					iconImg.url = "source/lookSpot/button/icon.png";
+					btnContain.addChild(iconImg);
+					iconImg.x = kmd.pointXY.x - 22;
+					iconImg.y = kmd.pointXY.y - 29;
+					if(kmd.dir == 1)
+					{
+						btn.x = iconImg.x + 48;
+						btn.y = iconImg.y;
+					}else{
+						btn.x = iconImg.x - 5;
+						btn.y = iconImg.y;
+						btn.addEventListener("buttonOK",buttonLoadOKHandler);
+					}
+					btn.data = kmd.detailmd;
+					btn.addEventListener(MouseEvent.CLICK,clickAlphaButton);
+				}
+				
 				btnContain.addChild(btn);
-				btn.x = kmd.pointXY.x - 97;
-				btn.y = kmd.pointXY.y - 34;
+				
+//				btn.x = kmd.pointXY.x - 97;
+//				btn.y = kmd.pointXY.y - 34;
 //				btn.x = Math.random() * 1700 + 100;
 //				btn.y = Math.random() * 900 + 50;
 				if(kk == 0)
 				{
 					cumd = kmd.detailmd;
 				}
-				btn.data = kmd.detailmd;
 				btnArr.push(btn);
-				btn.addEventListener(MouseEvent.CLICK,clickAlphaButton);
 				kk++;
 			}
 			autoFall();
@@ -159,6 +191,39 @@ package pages
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE,timerComplete);
 			timer.start();
 		}
+		private function buttonLoadOKHandler(event:Event):void
+		{
+			var cb:CButton = event.currentTarget as CButton;
+			cb.x -= cb.width;
+		}
+		private var qxdataIndexArr:Array = [0,1,2,3,4,7,6];
+		private var qxdetailView:TravelDetalView;
+		/*
+		 *进入对应的区县 
+		*/
+		private function enterQX(event:MouseEvent):void
+		{
+			var qbtn:CButton = event.currentTarget as CButton;
+			if(qbtn.data >= qxDataArr.length) return;
+			qxdetailView = new TravelDetalView(qxDataArr[qbtn.data]);
+			if(spotsArray)
+			{
+				qxdetailView.hotspotMdArray = spotsArray;
+			}
+			addChild(qxdetailView);
+			qxdetailView.addEventListener(Event.REMOVED_FROM_STAGE,clearQXView);
+			
+		}
+		private function clearQXView(event:Event):void
+		{
+			if(qxdetailView)
+			{
+				
+				qxdetailView = null;
+			}
+		}
+		public var spotsArray:Array;
+		public var qxDataArr:Array;
 		private var detailSprte:Sprite;
 		private var timer:Timer;
 		private function dispatchHandler(event:Event):void
@@ -238,6 +303,10 @@ package pages
 		public function clearAll():void
 		{
 			detailSprte.visible = false;
+			if(qxdetailView)
+			{
+				qxdetailView.clear();
+			}
 			if(detailView)
 			{
 				detailView.clear();

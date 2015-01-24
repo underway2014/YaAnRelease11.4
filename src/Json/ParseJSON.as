@@ -233,15 +233,19 @@ package Json
 				kmjSpotMd.name = ko.name;
 				kmjSpotMd.pointXY = new Point(ko.coordX,ko.coordY);
 				kmjSpotMd.skinArr = ko.skin;
-				kmjSpotMd.detailmd = new KmjPointDetailMd();
-				kmjSpotMd.detailmd.headArr = ko.detail.head;
-				kmjSpotMd.detailmd.name = ko.detail.name;
-				kmjSpotMd.detailmd.bg = ko.detail.background;
-				kmjSpotMd.detailmd.desc = ko.detail.desc;
-				kmjSpotMd.detailmd.music = ko.detail.music;
-				kmjSpotMd.detailmd.video = ko.detail.video;
-				kmjSpotMd.detailmd.scrollArr = ko.detail.scroll;
-				
+				kmjSpotMd.dir = ko.dir;
+				if(ko.dir != 0 || ko.dir != "0")
+				{
+					kmjSpotMd.detailmd = new KmjPointDetailMd();
+					kmjSpotMd.detailmd.headArr = ko.detail.head;
+					kmjSpotMd.detailmd.name = ko.detail.name;
+					kmjSpotMd.detailmd.bg = ko.detail.background;
+					kmjSpotMd.detailmd.desc = ko.detail.desc;
+					kmjSpotMd.detailmd.music = ko.detail.music;
+					kmjSpotMd.detailmd.video = ko.detail.video;
+					kmjSpotMd.detailmd.scrollArr = ko.detail.scroll;
+					
+				}
 				kmjMd.pointArr.push(kmjSpotMd);
 				continue;
 //				kmjMd.pointArr.push(kmjSpotMd);

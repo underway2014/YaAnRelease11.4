@@ -55,7 +55,7 @@ package pages
 			loop.size = new Point(1381,925);
 //			loop.size = new Point(1666,869);
 			loop.x = (YAConst.SCREEN_WIDTH - loop.size.x) / 2;
-//			loop.y = 60;
+			loop.y = 40;
 			addChild(loop);
 			
 			var barr:Array = ["source/public/back_up.png","source/public/back_up.png"];

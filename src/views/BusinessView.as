@@ -2,6 +2,7 @@ package views
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
@@ -63,6 +64,7 @@ package views
 				n++;
 			}
 			loopAtl = new LoopAtlas(imgArr,false);
+			loopAtl.size = new Point(1920,1080);
 			addChild(loopAtl);
 			
 			initPageButton();

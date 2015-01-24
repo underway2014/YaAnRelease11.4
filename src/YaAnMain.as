@@ -57,12 +57,13 @@ package
 			
 			this.addEventListener(MouseEvent.CLICK,screenClickHandler);
 			
-			var checkTimer:Timer = new Timer(1000 * 3);
+			var checkTimer:Timer = new Timer(checkPerTime);
 			checkTimer.addEventListener(TimerEvent.TIMER,checktimerHandler);
 			checkTimer.start();
 		}
-		private var howlongtime_check:int = 1000 * 6;//无人操作时间设定
-		private var pageStayTime:int = 1000 * 10; // 自动播放时页面的停留时间
+		private var howlongtime_check:int = 1000 * 60 * 5;//无人操作时间设定
+		private var pageStayTime:int = 1000 * 30; // 自动播放时页面的停留时间
+		private var checkPerTime:int = 1000 * 30; //每隔 30 s 检查一次，
 		private var isNoPersonUse:Boolean = false;
 		private function checktimerHandler(event:TimerEvent):void
 		{
@@ -314,6 +315,8 @@ package
 					if(!kmjPage)
 					{
 						kmjPage = new KmjPage(json.getKmjData());
+						kmjPage.qxDataArr = json.getTravelData();
+						kmjPage.spotsArray = json.getKmjData().pointArr;
 						modeContain.addChild(kmjPage);
 						willShowMode = kmjPage;
 					}else{

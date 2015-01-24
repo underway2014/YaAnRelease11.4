@@ -3,6 +3,7 @@ package pages
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -65,6 +66,7 @@ package pages
 				i++;
 			}
 			loopAtlas = new LoopAtlas(imgArr,true);
+			loopAtlas.size = new Point(1920,1080);
 //			loopAtlas.addEventListener(DataEvent.CLICK,enterHandler);
 			addChild(loopAtlas);
 			loopAtlas.addEventListener(LoopAtlas.PLAY_OVER,loopPlayOver);
