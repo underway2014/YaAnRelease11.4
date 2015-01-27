@@ -10,5 +10,6 @@ package models
 		public var url:String;
 		public var contentArr:Array;
 		public var bg:String;
+		public var navArr:Array;
 	}
 }

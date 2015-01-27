@@ -162,7 +162,7 @@ package pages
 //			this.dispatchEvent(cdata);
 			videoContain.visible = true;
 			videoView = new VideoView();
-			videoView.videoName = "雅安宣传片欣赏";
+			videoView.videoName = "视频欣赏";
 //			videoView.loop = true;
 			videoView.addEventListener(Event.REMOVED_FROM_STAGE,clearVideo);
 			videoView.addEventListener(VideoView.VIDEO_PLAY_OVER,playOverHandler);

@@ -16,6 +16,7 @@ package views
 	public class MusicView extends Sprite
 	{
 		private var music:MusicPlayer;
+		private var _isPause:Boolean;
 		public function MusicView(_url:String)
 		{
 			super();
@@ -125,5 +126,23 @@ package views
 			}
 			music.clear();
 		}
+		
+		public function pauseMusic():void
+		{
+			music.pause();
+			mbtn.select(false);
+			
+		}
+
+		public function get isPause():Boolean
+		{
+			return music.isPause;
+		}
+
+		public function set isPause(value:Boolean):void
+		{
+			_isPause = value;
+		}
+
 	}
 }

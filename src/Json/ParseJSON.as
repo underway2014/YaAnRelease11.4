@@ -7,6 +7,7 @@ package Json
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
+	import models.AboutNavMd;
 	import models.ActiveItemDetailMd;
 	import models.ActiveItemMd;
 	import models.ActiveMd;
@@ -462,6 +463,16 @@ package Json
 			telMd.bg = telData.background;
 			telMd.contentArr = telData.content;
 			telMd.dsc = telData.desc;
+			telMd.navArr = new Array();
+			var nmd:AboutNavMd;
+			for each(var tob:Object in telData.nav)
+			{
+				nmd = new AboutNavMd();
+				nmd.skin = tob.skin;
+				nmd.begin = tob.begin;
+				nmd.end = tob.end;
+				telMd.navArr.push(nmd);
+			}
 			
 			dispatchEvent(new Event(LOAD_COMPLETE));
 		}

@@ -13,7 +13,9 @@
 	import core.loadEvents.CLoader;
 	
 	import models.KMJWalkLineMd;
+	import models.KmjMd;
 	import models.KmjPointDetailMd;
+	import models.KmjPointMd;
 	import models.PublicMd;
 	import models.YAConst;
 	import models.YFontFormat;
@@ -23,11 +25,12 @@
 		private var md:KmjPointDetailMd;
 		private var selfWidth:int = 1710 + 35;
 		private var selfHeight:int = 900;
-		public function KmjDetailView(_md:KmjPointDetailMd)
+		private var parentMd:KmjPointMd;
+		public function KmjDetailView(_md:KmjPointMd)
 		{
 			super();
-			
-			md = _md;
+			parentMd = _md;
+			md = _md.detailmd;
 			
 			yarr = [];
 			for each(var x:int in md.scrollArr)
@@ -153,6 +156,10 @@
 				img = new CImage(1710,594,false,false);
 				img.url = str;
 				imgArr.push(img);
+				if(md.video && md.video != "")
+				{
+					img.addEventListener(MouseEvent.CLICK,loopPlayVideo);
+				}
 			}
 			
 			loop = new LoopAtlas(imgArr,true);
@@ -164,6 +171,49 @@
 			loop.y = 15;
 			
 			currentY = 594;
+		}
+		private function pauseMusic():void
+		{
+			if(musicView)
+			{
+				if(!musicView.isPause)
+				{
+					musicView.pauseMusic();
+				}
+			}
+		}
+		private var videoContain:Sprite;
+		private var videoView:VideoView;
+		private function loopPlayVideo(event:MouseEvent):void
+		{
+			pauseMusic();
+			var ctimg:CImage = event.currentTarget as CImage;
+			if(!videoContain)
+			{
+				videoContain = new Sprite();
+				videoContain.graphics.beginFill(0x000,.7);
+				videoContain.graphics.drawRect(0,0,YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT);
+				videoContain.graphics.endFill();
+				addChild(videoContain);
+			}
+			videoContain.visible = true;
+			videoView = new VideoView();
+			videoView.videoName = parentMd.name + "宣传片欣赏";
+			videoView.addEventListener(Event.REMOVED_FROM_STAGE,clearVideo);
+			videoView.addEventListener(VideoView.VIDEO_PLAY_OVER,playOverHandler);
+			videoView.url = md.video
+			videoContain.addChild(videoView); 
+			videoView.x = 448;
+			videoView.y = 100;
+		}
+		private function clearVideo(event:Event):void
+		{
+			videoContain.visible = false;
+			videoView = null;
+		}
+		private function playOverHandler(event:Event):void
+		{
+			
 		}
 		private var currentY:int;
 		private function initDetai():void
@@ -324,6 +374,10 @@
 		}
 		public function clear():void
 		{
+			if(videoView)
+			{
+				videoView.clear();
+			}
 			backHandler(null);
 		}
 		

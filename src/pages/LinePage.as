@@ -120,7 +120,7 @@ package pages
 			cobj.isMoveing = true;
 			var encdScale:Number;
 			var endXY:Point = new Point();
-			var disScale:Number = Math.random() / 4;
+			var disScale:Number = Math.random() / 6;
 			if(Math.random() > .4999)//+
 			{
 				encdScale = cobj.scaleX + disScale;
@@ -140,16 +140,16 @@ package pages
 			if(endXY.x < 0)
 			{
 				endXY.x = 0;
-			}else if(endXY.x > 1200 - 100)
+			}else if(endXY.x > 1200 - 120)
 			{
-				endXY.x = 1100;
+				endXY.x = 1080;
 			}
-			if(endXY.y > 1080 - 100 - 100)
+			if(endXY.y > 770)
 			{
-				endXY.y = 800;
-			}else if(endXY.y <= 350)
+				endXY.y = 770;
+			}else if(endXY.y <= 380)
 			{
-				endXY.y = 350;
+				endXY.y = 380;
 			}
 			
 			if(encdScale > 1.25)
@@ -193,9 +193,9 @@ package pages
 		private function randomCoor(obj:Sprite):void
 		{
 			var scaleXY:int = 0;
-			obj.x = Math.random() * (YAConst.SCREEN_WIDTH - 800) + 70;
-			obj.y = Math.random() * (YAConst.SCREEN_HEIGHT - 500) + 400;
-			scaleXY = int(Math.random() / 5 * 100);
+			obj.x = Math.random() * (YAConst.SCREEN_WIDTH - 830) + 70;
+			obj.y = Math.random() * (YAConst.SCREEN_HEIGHT - 550) + 450;
+			scaleXY = int(Math.random() / 6 * 100);
 			if(Math.random() > .499)
 			{
 				obj.alpha = obj.scaleX = obj.scaleY = 1 - scaleXY / 100.0;
@@ -212,7 +212,7 @@ package pages
 			if(spotsArray && spotsArray.length > cb.data)
 			{
 				var hmd:KmjPointMd = spotsArray[cb.data];
-				spotDetailView = new KmjDetailView(hmd.detailmd);
+				spotDetailView = new KmjDetailView(hmd);
 				spotDetailView.addEventListener(Event.REMOVED_FROM_STAGE,clearDetailView);
 				spotContain.addChild(spotDetailView);
 				spotContain.visible = true;
@@ -286,6 +286,7 @@ package pages
 				sArr.push(psprite);
 			}
 			loopAtl = new LoopAtlas(sArr,false);
+			loopAtl.size = new Point(YAConst.SCREEN_WIDTH,YAConst.SCREEN_HEIGHT);
 			contain.addChild(loopAtl);
 			initPageButton();
 			

@@ -1,6 +1,7 @@
 package views
 {
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
@@ -80,6 +81,7 @@ package views
 		{
 			this.visible = false;
 			loopAtl.gotoPage(0);
+			dispatchEvent(new Event("foodback",true));
 		}
 		private function initPageButton():void
 		{

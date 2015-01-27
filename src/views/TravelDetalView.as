@@ -224,6 +224,11 @@ package views
 			bottomContain.addChild(hotImg);
 			hotImg.x = 256 + 10;
 			
+			var cloudImg:CImage = new CImage(648,285,false,false);
+			cloudImg.url = "source/travel/son/cloud.png";
+			bottomContain.addChild(cloudImg);
+			cloudImg.x = 990;
+			
 			hotContain = new Sprite();
 			hotContain.x = hotImg.x + 10 + 143;
 			bottomContain.addChild(hotContain);
@@ -240,6 +245,9 @@ package views
 				btn.addEventListener(MouseEvent.CLICK,enterSpot);
 				i++;
 			}
+			
+			
+			
 			
 			if(md.hotspots.length > 4)
 			{
@@ -280,7 +288,7 @@ package views
 			if(hotspotMdArray && hotspotMdArray.length >= cb.data)
 			{
 				var hmd:KmjPointMd = hotspotMdArray[cb.data];
-				spotDetailView = new KmjDetailView(hmd.detailmd);
+				spotDetailView = new KmjDetailView(hmd);
 				spotDetailView.addEventListener(Event.REMOVED_FROM_STAGE,clearDetailView);
 				spotContain.addChild(spotDetailView);
 				spotContain.visible = true;

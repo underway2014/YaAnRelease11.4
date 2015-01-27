@@ -1,5 +1,9 @@
 package pages
 {
+	import com.Rippler;
+	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -10,6 +14,7 @@ package pages
 	import core.baseComponent.CButton;
 	import core.baseComponent.CImage;
 	import core.baseComponent.LoopAtlas;
+	import core.effect.Rippler;
 	import core.interfaces.PageClear;
 	import core.loadEvents.Cevent;
 	import core.tween.TweenLite;
@@ -59,6 +64,7 @@ package pages
 				btn.data =i;
 //				btn.data =eatmd.beginIndexArr[i];
 				btn.addEventListener(MouseEvent.CLICK,clickHandler);
+				btn.addEventListener("buttonOK",btnOkHandler);
 				btn.x = beginX + i * 640;
 				addChild(btn);
 				btnArray.push(btn);
@@ -68,7 +74,7 @@ package pages
 				maskShape.graphics.endFill();
 				maskShape.x = beginX + i * 640;
 				shapeArray.push(maskShape);
-				addChild(maskShape);
+//				addChild(maskShape);
 				
 				i++;
 			}
@@ -91,7 +97,7 @@ package pages
 			tjbackBtn.x = 30;
 			tjbackBtn.y = 700;
 			
-			
+			this.addEventListener("foodback",childHide);
 			
 			timer = new Timer(100,1);
 			timer.addEventListener(TimerEvent.TIMER,dispatchHandler);
@@ -105,6 +111,82 @@ package pages
 			dispatchEvent(new Event(Cevent.PAGEINIT_COMPLETE,true));
 //			autoMove();
 			alphaChange();
+		}
+		private var count:int = 0;
+		private function btnOkHandler(event:Event):void
+		{
+			count++;
+			if(count < 3) return;
+			var bdata:BitmapData = new BitmapData(1920,1080);
+			bdata.draw(this);
+			bitmap = new Bitmap(bdata);
+			addChild(bitmap);
+			rippler = new core.effect.Rippler(bitmap,60,2);
+			this.addEventListener(MouseEvent.MOUSE_MOVE,handleMouseMove);
+			
+			autoWaterTimer = new Timer(5000);
+			autoWaterTimer.addEventListener(TimerEvent.TIMER,waterHandler);
+			autoWaterTimer.start();
+		}
+		private function waterHandler(event:TimerEvent):void
+		{
+			if(ctimer) return;
+				var ax:Number = Math.random() * 1500 + 100;
+				var ay:Number = Math.random() * 700 + 100;
+				var vx:Number = Math.random()*4 + 1;
+				var vy:Number = Math.random()*4 + 1;
+				var len:int = 2 + Math.random() * 30;
+				xyarr = [];
+				var vdir:int = 1;
+				if(Math.random() > .49)
+				{
+					vdir = -1;
+				}
+				var hdir:int = 1;
+				if(Math.random() > .49)
+				{
+					hdir = -1;
+				}
+				
+			for(var k:int = 0;k < len;k++)
+			{
+				var arr:Array = new  Array(ax + hdir*k*vx*vx*vx,ay +vdir*k*vy*vy*vy);
+				vdir += Math.random()*vdir;
+				hdir += Math.random()*hdir;
+				xyarr.push(arr);
+			}
+			var delayT:int = Math.random() * 300 + 100;
+			ctimer = new Timer(delayT,xyarr.length);
+			ctimer.addEventListener(TimerEvent.TIMER,haha);
+			ctimer.addEventListener(TimerEvent.TIMER_COMPLETE,coverH);
+			ctimer.start();
+			
+				
+		}
+		private var xyarr:Array;
+		private var ctimer:Timer;
+		private function haha(event:TimerEvent):void
+		{
+			trace("ctimer.currentCount=",ctimer.currentCount);
+			waterMove(xyarr[ctimer.currentCount - 1][0],xyarr[ctimer.currentCount - 1][1]);
+		}
+		private function coverH(event:TimerEvent):void
+		{
+			if(ctimer)
+			ctimer = null;
+		}
+		private var autoWaterTimer:Timer;
+		private var bitmap:Bitmap;
+		private var rippler:core.effect.Rippler
+		private function handleMouseMove(event : MouseEvent) : void
+		{
+			// the ripple point of impact is size 20 and has alpha 1
+			waterMove(this.mouseX, this.mouseY);
+		}
+		private function waterMove(wx:Number,wy:Number):void
+		{
+//			trace(this.mouseX,this.mouseY);
+			rippler.drawRipple(wx, wy, 20, 1);
 		}
 		private function alphaChange():void
 		{
@@ -181,12 +263,23 @@ package pages
 			loopAtl = new LoopAtlas(imgArr,false);
 			contentSprite.addChildAt(loopAtl,0);
 		}
+		private function childHide(event:Event):void
+		{
+			if(bitmap)
+			{
+				bitmap.visible = true;
+			}
+		}
 		private var loopAtl:LoopAtlas;
 		private var foodstreetView:FoodStreetView;
 		private var businessView:BusinessView;
 		private var foodView:FoodView;
 		private function clickHandler(event:MouseEvent):void
 		{
+			if(bitmap)
+			{
+				bitmap.visible = false;
+			}
 			var cb:CButton = event.currentTarget as CButton;
 			switch(cb.data)
 			{
@@ -228,6 +321,10 @@ package pages
 			{
 				this.visible = false;
 			}
+			if(bitmap)
+			{
+				bitmap.visible = false;
+			}
 			dispatchEvent(new Event("backHome",true));
 		}
 		private function loopAtlbackHandler(event:MouseEvent):void
@@ -239,6 +336,10 @@ package pages
 		}
 		public function clearAll():void
 		{
+			if(bitmap)
+			{
+				bitmap.visible = false;
+			}
 			if(businessView)
 			{
 				contentSprite.removeChild(businessView);
@@ -258,6 +359,10 @@ package pages
 		public function hide():void
 		{
 			this.visible = false;
+			if(bitmap)
+			{
+				bitmap.visible = false;
+			}
 		}
 		public function show():void
 		{
@@ -268,6 +373,10 @@ package pages
 //			autoMove();
 			this.visible = true;
 			alphaChange();
+			if(bitmap)
+			{
+				bitmap.visible = true;
+			}
 		}
 	}
 }

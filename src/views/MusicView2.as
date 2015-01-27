@@ -38,13 +38,14 @@ package views
 			//			txt.y = 10;
 			
 			
-			timeFormat = new TextFormat(null,16,0xffffff,null,null,null,null,null,TextFormatAlign.CENTER);
+			timeFormat = new TextFormat(null,16,0x000000,null,null,null,null,null,TextFormatAlign.RIGHT);
 			currentTimeTxt = new TextField();
-			currentTimeTxt.width = 65;
+			currentTimeTxt.width = 60;
 			currentTimeTxt.text = "00:00";
-//			currentTimeTxt.setTextFormat(timeFormat);
-			currentTimeTxt.y = 13;
-//			addChild(currentTimeTxt);
+			currentTimeTxt.setTextFormat(timeFormat);
+			currentTimeTxt.y = 25;
+			currentTimeTxt.x = 310;
+			addChild(currentTimeTxt);
 			
 			var probgImg:CImage = new CImage(310,21,false,false);
 			probgImg.url = "source/travel/son/audioprobg.png";
@@ -82,8 +83,8 @@ package views
 		{
 			progressShape.graphics.clear();
 			progressShape.graphics.endFill();
-//			currentTimeTxt.text = "00:00";
-//			currentTimeTxt.setTextFormat(timeFormat);
+			currentTimeTxt.text = "00:00";
+			currentTimeTxt.setTextFormat(timeFormat);
 			this.clear();
 			mbtn.select(false);
 		}
@@ -93,14 +94,14 @@ package views
 		private function musicLoadOk(event:Event):void
 		{
 			//			var timeformat:TextFormat = new TextFormat(null,18,0xa69c91);
-			
-//			var totalTimeTxt:TextField = new TextField();
-//			totalTimeTxt.width = 65;
-//			totalTimeTxt.text = CDate.timeFormate(music.length / 1000);
-//			totalTimeTxt.x = 920;
-//			totalTimeTxt.y = 13;
-//			totalTimeTxt.setTextFormat(timeFormat);
-//			addChild(totalTimeTxt);
+			var totaltimeFormat:TextFormat = new TextFormat(null,16,0x000000,null,null,null,null,null,TextFormatAlign.LEFT);
+			var totalTimeTxt:TextField = new TextField();
+			totalTimeTxt.width = 60;
+			totalTimeTxt.text = "/ " + CDate.timeFormate(music.length / 1000);
+			totalTimeTxt.x = 370;
+			totalTimeTxt.y = 25;
+			totalTimeTxt.setTextFormat(totaltimeFormat);
+			addChild(totalTimeTxt);
 			totalTime = music.length;
 		}
 		private function playHandler(evet:MouseEvent):void
@@ -129,8 +130,8 @@ package views
 			progressShape.graphics.drawRect(0,0,music.currentPosition / totalTime * 310,30);
 			progressShape.graphics.endFill();
 			
-//			currentTimeTxt.text = CDate.timeFormate(music.currentPosition / 1000);
-//			currentTimeTxt.setTextFormat(timeFormat);
+			currentTimeTxt.text = CDate.timeFormate(music.currentPosition / 1000);
+			currentTimeTxt.setTextFormat(timeFormat);
 		}
 		public function clear():void
 		{

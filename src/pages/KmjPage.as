@@ -168,7 +168,7 @@ package pages
 						btn.y = iconImg.y;
 						btn.addEventListener("buttonOK",buttonLoadOKHandler);
 					}
-					btn.data = kmd.detailmd;
+					btn.data = kmd;
 					btn.addEventListener(MouseEvent.CLICK,clickAlphaButton);
 				}
 				
