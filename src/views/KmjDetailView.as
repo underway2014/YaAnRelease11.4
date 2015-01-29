@@ -13,7 +13,6 @@
 	import core.loadEvents.CLoader;
 	
 	import models.KMJWalkLineMd;
-	import models.KmjMd;
 	import models.KmjPointDetailMd;
 	import models.KmjPointMd;
 	import models.PublicMd;

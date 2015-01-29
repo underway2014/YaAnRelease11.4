@@ -196,7 +196,7 @@ package pages
 			var cb:CButton = event.currentTarget as CButton;
 			cb.x -= cb.width;
 		}
-		private var qxdataIndexArr:Array = [0,1,2,3,4,7,6];
+		private var qxdataIndexArr:Array = [0,1,2,3,4,5,7,6];
 		private var qxdetailView:TravelDetalView;
 		/*
 		 *进入对应的区县 

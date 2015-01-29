@@ -65,10 +65,12 @@ package pages
 			backBtn.y = YAConst.BACKBUTTONY;
 			
 			init();
-			initNameButton();
+			var addTimer:Timer = new Timer(100,1);
+			addTimer.addEventListener(TimerEvent.TIMER,initNameButton);
+			addTimer.start();
 			
 		}
-		private function initNameButton():void
+		private function initNameButton(event:TimerEvent):void
 		{
 			var nbtn:CButton;
 			nameBtnArr = [];
@@ -190,11 +192,17 @@ package pages
 			}
 			return false;
 		}
-		private function randomCoor(obj:Sprite):void
+		private function randomCoor(obj:CButton):void
 		{
 			var scaleXY:int = 0;
 			obj.x = Math.random() * (YAConst.SCREEN_WIDTH - 830) + 70;
 			obj.y = Math.random() * (YAConst.SCREEN_HEIGHT - 550) + 450;
+			while(checkoutIsDJ(obj))
+			{
+				obj.x = Math.random() * (YAConst.SCREEN_WIDTH - 830) + 70;
+				obj.y = Math.random() * (YAConst.SCREEN_HEIGHT - 550) + 450;
+			}
+			
 			scaleXY = int(Math.random() / 6 * 100);
 			if(Math.random() > .499)
 			{
@@ -203,6 +211,7 @@ package pages
 			}else{
 				obj.scaleX = obj.scaleY = 1 + scaleXY / 100.0;
 			}
+		
 		}
 		private var spotDetailView:KmjDetailView;
 		private function enterSpot(event:MouseEvent):void

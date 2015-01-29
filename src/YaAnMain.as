@@ -6,6 +6,7 @@ package
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.system.fscommand;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.ui.Mouse;
@@ -47,7 +48,9 @@ package
 	{
 		public function YaAnMain()
 		{
-//			Mouse.hide();
+			
+			Mouse.hide();
+			fscommand("fullscreen","true");
 			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
 			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
 			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
