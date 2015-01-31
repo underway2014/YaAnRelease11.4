@@ -44,7 +44,7 @@ package views
 			addChild(currentTimeTxt);
 			
 			var probgImg:CImage = new CImage(856,8,false,false);
-			probgImg.url = "source/public//music_progressbg.png";
+			probgImg.url = "source/public/music_progressbg.png";
 			addChild(probgImg);
 			var proImg:CImage = new CImage(856,8,false,false);
 			proImg.url = "source/public/music_progress.png";

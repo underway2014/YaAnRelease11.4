@@ -49,11 +49,11 @@ package
 		public function YaAnMain()
 		{
 			
-			Mouse.hide();
-			fscommand("fullscreen","true");
-			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
-			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
-			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
+//			Mouse.hide();
+//			fscommand("fullscreen","true");
+//			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
+//			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
+//			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
 			initData();
 			
 			this.addEventListener(Cevent.PAGEINIT_COMPLETE,pageInitComplete);
