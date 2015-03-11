@@ -5,7 +5,6 @@ package
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
-	import flash.geom.Point;
 	import flash.system.fscommand;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -49,11 +48,12 @@ package
 		public function YaAnMain()
 		{
 			
-//			Mouse.hide();
-//			fscommand("fullscreen","true");
-//			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
-//			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
-//			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
+			Mouse.hide();
+			fscommand("fullscreen","true");
+			this.addEventListener(MouseEvent.RIGHT_CLICK,doNothing);
+			this.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,doNothing);
+			this.addEventListener(MouseEvent.RIGHT_MOUSE_UP,doNothing);
+			
 			initData();
 			
 			this.addEventListener(Cevent.PAGEINIT_COMPLETE,pageInitComplete);

@@ -4,6 +4,8 @@ package pages
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -51,10 +53,17 @@ package pages
 					{
 						btn = new CButton(bmd.skinArr,true,false);
 						btn.data = bmd.data;
-						btn.addEventListener(MouseEvent.CLICK,enterHandler);
+						
 						img.addChild(btn);
 						btn.x = bmd.coordXY.x;
 						btn.y = bmd.coordXY.y;
+						if(md.type == "url")
+						{
+							btn.addEventListener(MouseEvent.CLICK,openWeb);
+						}else{
+							btn.addEventListener(MouseEvent.CLICK,enterHandler);
+						}
+						
 					}
 					if(md.type == "tq")//天气
 					{
@@ -170,6 +179,16 @@ package pages
 			videoContain.addChild(videoView); 
 			videoView.x = 448;
 			videoView.y = 100;
+		}
+		private function openWeb(event:MouseEvent):void
+		{
+			var cb:CButton = event.currentTarget as CButton;
+			if(!cb.data || cb.data == "")
+			{
+				return;
+			}
+			var url:URLRequest = new URLRequest(cb.data);
+			navigateToURL(url,"_blank");
 		}
 		private function playOverHandler(event:Event):void
 		{
